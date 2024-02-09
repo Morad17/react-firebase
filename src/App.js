@@ -10,7 +10,7 @@ import Firebase from "./Firebase"
 function App() {
 
   const currentUser = false
-  const RequiredAuth = ({children}) => {
+  const RequireAuth = ({children}) => {
     return currentUser ? (children) : <Navigate to="/login" />
   }
 
@@ -28,11 +28,14 @@ function App() {
       element: <Layout/>,
       children: [{
         path: "/",
-        element: <Home />
+        element: 
+        <RequireAuth>
+          <Home />
+        </RequireAuth>
       },
       {
         path: "/login",
-        elemet: <Login />
+        element: <Login />
       }
     
     ]
