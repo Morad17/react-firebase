@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseConfig } from '../Firebase'
 import { useNavigate } from 'react-router';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
 
@@ -12,6 +13,9 @@ const Login = () => {
 
     const navigate = useNavigate()
     
+    const {dispatch} = useContext(AuthContext)
+
+
     const handleLogin = (e) => {
         e.preventDefault()
         initializeApp(firebaseConfig)
@@ -20,6 +24,7 @@ const Login = () => {
             .then((userCredential) => {
             // Signed up 
             const user = userCredential.user;
+            dispatch({type:"LOGIN", payload:user})
             console.log(user);
             navigate("/")
         })

@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Outlet,createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Footer from "./components/Footer"
 import Login from "./pages/Login";
+import AdminPage from './pages/AdminPage'
+
 import Firebase from "./Firebase"
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
 
-  const currentUser = false
+  const { currentUser } = useContext(AuthContext)
+
   const RequireAuth = ({children}) => {
     return currentUser ? (children) : <Navigate to="/login" />
   }
+  console.log(currentUser);
 
   const Layout = () => {
     return (<div className="main-layout">
@@ -29,13 +34,17 @@ function App() {
       children: [{
         path: "/",
         element: 
-        <RequireAuth>
           <Home />
-        </RequireAuth>
       },
       {
         path: "/login",
         element: <Login />
+      },
+      {
+        path:"/",
+        element: <RequireAuth>
+                  <AdminPage />
+                </RequireAuth>
       }
     
     ]
