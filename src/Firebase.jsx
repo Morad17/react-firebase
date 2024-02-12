@@ -1,6 +1,7 @@
 import React from 'react'
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore"
 import Login from './pages/Login';
 
     export const firebaseConfig = {
@@ -12,5 +13,8 @@ import Login from './pages/Login';
       appId: process.env.REACT_APP_APP_ID,
       measurementId: process.env.REACT_APP_MEASUREMENT_ID
     }
+
+    const app = initializeApp(firebaseConfig)
+    export const db = getFirestore(app)
 
     // const analytics = getAnalytics(app);

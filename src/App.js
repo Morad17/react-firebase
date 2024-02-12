@@ -15,7 +15,7 @@ function App() {
   const { currentUser } = useContext(AuthContext)
 
   const RequireAuth = ({children}) => {
-    return currentUser ? (children) : <Navigate to="/login" />
+    return currentUser ? children : <Navigate to="/login" />
   }
   console.log(currentUser);
 
@@ -41,10 +41,9 @@ function App() {
         element: <Login />
       },
       {
-        path:"/",
-        element: <RequireAuth>
+        path:"/admin-page",
+        element:
                   <AdminPage />
-                </RequireAuth>
       }
     
     ]

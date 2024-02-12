@@ -1,8 +1,11 @@
 import React from 'react'
+import AddData from '../components/AddData'
 
 const AdminPage = () => {
   return (
-    <div>AdminPage</div>
+    <div>
+      <AddData />
+    </div>
   )
 }
 
