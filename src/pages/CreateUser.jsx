@@ -4,16 +4,19 @@ import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { auth, db } from '../Firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
-const AddData = () => {
+const CreateUser = () => {
 
-    const [ pictureData, setPictureData ] = useState({
+    const [ userData, setUserData ] = useState({
         name: '',
+        email: '',
+        password: '',
+
         location: '',
         dateTaken: null,
     })
-    const [picture, setPicture] = useState()
+    
 
-    const setData = (e) => {
+    const setUser = (e) => {
         setPictureData(prev => ({...prev, [e.target.name]:e.target.value }))
         console.log(pictureData);
     }
@@ -57,4 +60,4 @@ const AddData = () => {
   )
 }
 
-export default AddData
+export default CreateUser 
