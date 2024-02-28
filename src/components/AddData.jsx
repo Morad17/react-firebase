@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { collection, addDoc, doc, setDoc } from "firebase/firestore"; 
 
-import { auth, db } from '../Firebase';
+import {  db } from '../Firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const AddData = () => {

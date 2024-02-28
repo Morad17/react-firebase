@@ -10,6 +10,7 @@ import AdminPage from './pages/AdminPage'
 import Firebase from "./Firebase"
 import { AuthContext } from "./context/AuthContext";
 import AddData from "./components/AddData";
+import CreateUser from "./pages/CreateUser";
 
 function App() {
 
@@ -49,6 +50,10 @@ function App() {
       {
         path: "/add-data",
         element: <AddData />
+      },
+      {
+        path: "/create-user",
+        element: <CreateUser />
       }
     
     ]
