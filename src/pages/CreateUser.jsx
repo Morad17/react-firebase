@@ -12,6 +12,7 @@ const CreateUser = () => {
         password: '',
     })
     
+    const auth = getAuth()
 
     const setData = (e) => {
         setUserData(prev => ({...prev, [e.target.name]:e.target.value }))
@@ -21,11 +22,9 @@ const CreateUser = () => {
     const handleSubmit = async (e) =>  {
         e.preventDefault()
         try{
-            await createUserWithEmailAndPassword(
-                userData.username, userData.email, userData.password)
-            await setDoc(collection(db, "cities"), {
-                        ...userData
-                    });
+            const res = await createUserWithEmailAndPassword( auth, userData.email, userData.password)
+            await setDoc(doc(db, "users", res.user.uid), {...userData});
+            console.log( res.user.uid);
         } catch (err){
             console.log(err);
         }
