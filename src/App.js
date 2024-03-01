@@ -4,13 +4,11 @@ import { Outlet,createBrowserRouter, RouterProvider, Navigate } from 'react-rout
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Footer from "./components/Footer"
-import Login from "./pages/Login";
 import AdminPage from './pages/AdminPage'
 
 import Firebase from "./Firebase"
 import { AuthContext } from "./context/AuthContext";
 import AddData from "./components/AddData";
-import CreateUser from "./pages/CreateUser";
 
 function App() {
 
@@ -39,10 +37,6 @@ function App() {
           <Home />
       },
       {
-        path: "/login",
-        element: <Login />
-      },
-      {
         path:"/admin-page",
         element:
                   <AdminPage />
@@ -51,10 +45,6 @@ function App() {
         path: "/add-data",
         element: <AddData />
       },
-      {
-        path: "/create-user",
-        element: <CreateUser />
-      }
     
     ]
     }

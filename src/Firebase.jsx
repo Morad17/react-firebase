@@ -2,7 +2,7 @@ import React from 'react'
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore"
-import Login from './pages/Login';
+import Login from './components/Login';
 
     export const firebaseConfig = {
       apiKey: process.env.REACT_APP_FIREBASE_KEY ,

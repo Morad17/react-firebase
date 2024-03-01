@@ -37,16 +37,22 @@ const CreateUser = () => {
 
   return (
 
-    <div className="add-data">
-        <h1>Add My Picture</h1>
+    <div className="create-user">
         <form onSubmit={handleSubmit}>
             <label >Username</label>
             <input type="text" name="username" onChange={setData}/>
             <label >Password</label>          
             <input type="text" name="password" onChange={setData}/>
-            <label >Email</label>
+            <div className="second-row">
+                 <label >Email</label>
             <input type="text" name="email" onChange={setData}/>
+            <label >Display Picture</label>
+            <input type="file" name="display-picture"/>
+            </div>
+           
             <button type="submit">Submit</button>
+            
+           
         </form>
         <div className="success-message">Successfully Created An Account!</div>
     </div>
