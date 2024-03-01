@@ -3,6 +3,7 @@ import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 
 import { db } from '../Firebase';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from 'react-router';
 
 const CreateUser = () => {
 
@@ -13,7 +14,11 @@ const CreateUser = () => {
     })
     
     const auth = getAuth()
+    const navigate = useNavigate()
 
+    const successMessage = () => {
+       document.getElementsByClassName("success-message")[0].style.display = "flex"
+    }
     const setData = (e) => {
         setUserData(prev => ({...prev, [e.target.name]:e.target.value }))
         console.log(userData);
@@ -22,13 +27,12 @@ const CreateUser = () => {
     const handleSubmit = async (e) =>  {
         e.preventDefault()
         try{
-            const res = await createUserWithEmailAndPassword( auth, userData.email, userData.password)
-            await setDoc(doc(db, "users", res.user.uid), {...userData});
-            console.log( res.user.uid);
+            await createUserWithEmailAndPassword( auth, userData.email, userData.password)
+            .then(successMessage())
+            .then(navigate('/'))
         } catch (err){
             console.log(err);
         }
-        
     }   
 
   return (
@@ -44,6 +48,7 @@ const CreateUser = () => {
             <input type="text" name="email" onChange={setData}/>
             <button type="submit">Submit</button>
         </form>
+        <div className="success-message">Successfully Created An Account!</div>
     </div>
   )
 }
