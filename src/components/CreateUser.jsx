@@ -27,9 +27,13 @@ const CreateUser = () => {
     const handleSubmit = async (e) =>  {
         e.preventDefault()
         try{
-            await createUserWithEmailAndPassword( auth, userData.email, userData.password)
-            .then(successMessage())
-            .then(navigate('/'))
+            const res = await createUserWithEmailAndPassword( auth, userData.email, userData.password)
+            await setDoc(doc(db, "newuser", res.user.uid), {
+                name: res.user.uid,
+                email: res.user.email
+            })
+            console.log(res.user.uid);
+            // .then(successMessage())
         } catch (err){
             console.log(err);
         }
