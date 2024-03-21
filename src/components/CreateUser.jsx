@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { collection, addDoc, doc, setDoc } from "firebase/firestore"; 
+import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/firestore"; 
 
 import { db } from '../Firebase';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
@@ -30,7 +30,8 @@ const CreateUser = () => {
             const res = await createUserWithEmailAndPassword( auth, userData.email, userData.password)
             await setDoc(doc(db, "newuser", res.user.uid), {
                 name: res.user.uid,
-                email: res.user.email
+                email: res.user.email,
+                timestamp: serverTimestamp()
             })
             console.log(res.user.uid);
             // .then(successMessage())
@@ -51,7 +52,7 @@ const CreateUser = () => {
                  <label >Email</label>
             <input type="text" name="email" onChange={setData}/>
             <label >Display Picture</label>
-            <input type="file" name="display-picture"/>
+            <input type="file" name="display-picture"/> 
             </div>
            
             <button type="submit">Submit</button>
