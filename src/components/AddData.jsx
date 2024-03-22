@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { collection, addDoc, doc, setDoc } from "firebase/firestore"; 
-import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/firestore"; 
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
-import {  db, getStorage } from '../Firebase';
+import {  auth, db, storage } from '../Firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const AddData = () => {
@@ -11,19 +11,18 @@ const AddData = () => {
         name: '',
         location: '',
         dateTaken: null,
+        imageLink: '',
     })
-    const [picture, setPicture] = useState()
+    const [pictureFile, setPictureFile] = useState()
 
     useEffect(()=> {
         const uploadImage = () => {
-            const uniqueName = new Date().getTime() + picture.name
+            const uniqueName = new Date().getTime() + pictureData.name
             const storageRef = ref(storage, uniqueName)
-            const uploadTask = uploadBytesResumable(storageRef. picture)
+            const uploadTask = uploadBytesResumable(storageRef, pictureFile)
 
             uploadTask.on('state_changed', 
                 (snapshot) => {
-                    // Observe state change events such as progress, pause, and resume
-                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
                     switch (snapshot.state) {
@@ -38,17 +37,18 @@ const AddData = () => {
                     }
                 }, 
                 (error) => {
-                    // Handle unsuccessful uploads
+                    console.log(error)
                 }, 
                 () => {
                     // Handle successful uploads on complete
                     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log('File available at', downloadURL);
+                   setPictureData((prev)=> ({...prev, imageLink:downloadURL}))
                     });
                 }
                 )}
-        }, [picture])
+        uploadImage()
+        }, [pictureFile])
 
     const setData = (e) => {
         setPictureData(prev => ({...prev, [e.target.name]:e.target.value }))
@@ -56,7 +56,7 @@ const AddData = () => {
     }
 
     const handlePicture = e => {
-        setPicture(e.target.files[0])
+        setPictureFile(e.target.files[0])
     }
 
     const handleSubmit = async (e) =>  {
