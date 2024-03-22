@@ -19,3 +19,15 @@
 .success-message{
     display: none;
 }
+
+//Add Data
+.add-data{
+   .submit-button{
+        &:disabled{
+            background-color: rgb(94, 92, 92);
+            cursor: not-allowed;
+        }
+        background-color: rgb(65, 126, 126);
+        color: white;
+    } 
+}

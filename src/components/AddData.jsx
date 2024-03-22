@@ -14,6 +14,7 @@ const AddData = () => {
         imageLink: '',
     })
     const [pictureFile, setPictureFile] = useState()
+    const [percent, setPercent] = useState(null)
 
     useEffect(()=> {
         const uploadImage = () => {
@@ -25,6 +26,7 @@ const AddData = () => {
                 (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
+                    setPercent(progress);
                     switch (snapshot.state) {
                     case 'paused':
                         console.log('Upload is paused');
@@ -45,7 +47,8 @@ const AddData = () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                    setPictureData((prev)=> ({...prev, imageLink:downloadURL}))
                     });
-                }
+                },
+                console.log(pictureData, percent)
                 )}
         uploadImage()
         }, [pictureFile])
@@ -86,7 +89,7 @@ const AddData = () => {
             <input type="text" name="place" required onChange={setData}/>
             <label >Date Taken</label>
             <input type="date" name="dateTaken" onChange={setData}/>
-            <button type="submit">Submit</button>
+            <button className="submit-button" disabled={percent !== null && percent < 100} type="submit">Submit</button>
         </form>
     </div>
   )
