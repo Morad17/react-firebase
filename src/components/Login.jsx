@@ -25,10 +25,11 @@ const Login = () => {
             // Signed up 
             const user = userCredential.user;
             dispatch({type:"LOGIN", payload:user})
-            console.log(user);
+            console.log(user.email);
             navigate("/")
         })
         .catch((error) => {
+            console.log(error);
             setError(true)    
             
         });

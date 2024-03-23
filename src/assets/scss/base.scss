@@ -8,6 +8,21 @@
     }
 }
 
+// Nav  //
+
+.main-nav ul{
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style: none;
+    li a{
+        text-decoration: none;
+        color: black;
+        
+    }
+}
+
 
 //User Creation //
 .create-user{

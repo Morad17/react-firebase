@@ -1,5 +1,6 @@
 import React from 'react'
-import CreateUser from '../components/CreateUser'
+import { Link } from 'react-router-dom'
+
 import Login from '../components/Login'
 
 const Home = () => {
@@ -12,7 +13,9 @@ const Home = () => {
       </div>
       <div className="create-user-section">
         <h2>Don't have an accout? Create A New Account Here</h2>
-        <CreateUser />
+      <button>
+        <Link to="/register">Register</Link>
+      </button>
       </div>
       
     </div>

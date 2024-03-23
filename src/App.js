@@ -6,18 +6,17 @@ import Home from "./pages/Home";
 import Footer from "./components/Footer"
 import AdminPage from './pages/AdminPage'
 
-import Firebase from "./Firebase"
 import { AuthContext } from "./context/AuthContext";
 import AddData from "./components/AddData";
+import Register from "./pages/Register";
 
 function App() {
 
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser } = useContext(INITIAL)
 
   const RequireAuth = ({children}) => {
-    return currentUser ? children : <Navigate to="/login" />
+    return currentUser ? children : <Navigate to="/" />
   }
-  console.log(currentUser);
 
   const Layout = () => {
     return (<div className="main-layout">
@@ -37,9 +36,17 @@ function App() {
           <Home />
       },
       {
+        path:"/register",
+        element:
+          <Register />
+      },
+      {
         path:"/admin-page",
         element:
-                  <AdminPage />
+          <RequireAuth>
+            <AdminPage />
+          </RequireAuth>
+          
       },
       {
         path: "/add-data",
