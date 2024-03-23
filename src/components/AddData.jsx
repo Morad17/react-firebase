@@ -12,15 +12,18 @@ const AddData = () => {
         location: '',
         dateTaken: null,
         imageLink: '',
+        user: ''
     })
     const [pictureFile, setPictureFile] = useState()
     const [percent, setPercent] = useState(null)
+    const [uid, setUid] = useState('')
 
     useEffect(()=> {
         const uploadImage = () => {
             const uniqueName = new Date().getTime() + pictureData.name
             const storageRef = ref(storage, uniqueName)
-            const uploadTask = uploadBytesResumable(storageRef, pictureFile)
+            const metadata = {customMetadata:{'user': pictureData.user}}
+            const uploadTask = uploadBytesResumable(storageRef, pictureFile, metadata)
 
             uploadTask.on('state_changed', 
                 (snapshot) => {
@@ -43,7 +46,6 @@ const AddData = () => {
                 }, 
                 () => {
                     // Handle successful uploads on complete
-                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                    setPictureData((prev)=> ({...prev, imageLink:downloadURL}))
                     });
@@ -52,6 +54,11 @@ const AddData = () => {
                 )}
         uploadImage()
         }, [pictureFile])
+    useEffect(()=> {
+        const user = JSON.parse(localStorage.getItem("user"))
+        setPictureData({...pictureData, user:user.uid })
+    }, [])
+    
 
     const setData = (e) => {
         setPictureData(prev => ({...prev, [e.target.name]:e.target.value }))
@@ -65,11 +72,10 @@ const AddData = () => {
     const handleSubmit = async (e) =>  {
         e.preventDefault()
         try{
-            addDoc(collection(db, "cities"), {
-                        name: "Los Angeles",
-                        state: "CA",
-                        country: "USA"
+            const res = await addDoc(collection(db, "photo"), {
+                        ...pictureData
                     });
+            console.log(res);
         } catch (err){
             console.log(err);
         }
@@ -82,13 +88,13 @@ const AddData = () => {
         <h1>Add My Picture</h1>
         <form onSubmit={handleSubmit}>
             <label >Upload Image</label>
-            <input type="file" name="photo" accept="image/*" onChange={handlePicture}/>
+            <input required type="file" name="photo" accept="image/*" onChange={handlePicture}/>
             <label >Title</label>          
-            <input type="text" name="name" onChange={setData}/>
+            <input required type="text" name="name" onChange={setData}/>
             <label >Location</label>
-            <input type="text" name="place" required onChange={setData}/>
+            <input required type="text" name="place" onChange={setData}/>
             <label >Date Taken</label>
-            <input type="date" name="dateTaken" onChange={setData}/>
+            <input required type="date" name="dateTaken" onChange={setData}/>
             <button className="submit-button" disabled={percent !== null && percent < 100} type="submit">Submit</button>
         </form>
     </div>

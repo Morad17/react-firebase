@@ -29,7 +29,7 @@ const Register = () => {
       e.preventDefault()
       try{
           const res = await createUserWithEmailAndPassword( auth, userData.email, userData.password)
-          await setDoc(doc(db, "newuser", res.user.uid), {
+          await setDoc(doc(db, "users", res.user.uid), {
               name: res.user.uid,
               email: res.user.email,
               timestamp: serverTimestamp()

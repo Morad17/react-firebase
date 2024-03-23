@@ -23,7 +23,7 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
             // Signed up 
-            const user = userCredential.user;
+        const user = userCredential.user;
             dispatch({type:"LOGIN", payload:user})
             console.log(user.email);
             navigate("/")
