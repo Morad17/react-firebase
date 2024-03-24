@@ -20,7 +20,7 @@ const AddData = () => {
 
     useEffect(()=> {
         const uploadImage = () => {
-            const uniqueName = new Date().getTime() + pictureData.name
+            const uniqueName = pictureData.name + new Date().getTime()
             const storageRef = ref(storage, uniqueName)
             const metadata = {customMetadata:{'user': pictureData.user}}
             const uploadTask = uploadBytesResumable(storageRef, pictureFile, metadata)
@@ -92,7 +92,7 @@ const AddData = () => {
             <label >Title</label>          
             <input required type="text" name="name" onChange={setData}/>
             <label >Location</label>
-            <input required type="text" name="place" onChange={setData}/>
+            <input required type="text" name="location" onChange={setData}/>
             <label >Date Taken</label>
             <input required type="date" name="dateTaken" onChange={setData}/>
             <button className="submit-button" disabled={percent !== null && percent < 100} type="submit">Submit</button>
