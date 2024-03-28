@@ -16,9 +16,9 @@ const Home = () => {
           </div>
           <div className="create-user-section">
             <h2>Don't have an accout? Create A New Account Here</h2>
-          <button>
-            <Link to="/register">Register</Link>
-          </button>
+            <button>
+              <Link to="/register">Register</Link>
+            </button>
           </div>
         </div>
        

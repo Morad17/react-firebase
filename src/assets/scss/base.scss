@@ -10,8 +10,9 @@
 
 // Nav  //
 
-.main-nav ul{
-    
+.main-nav{
+
+   ul{    
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -22,6 +23,12 @@
         
     }
 }
+ .nav-banner{
+    padding: 0;
+    margin: 0;
+ }
+}
+
 
 
 //User Creation //

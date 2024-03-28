@@ -15,7 +15,7 @@ const Navbar = () => {
         currentUser ? 
         <ul className="registered-links">
           <li><Link to="/">Home</Link></li>
-          <li><h2>Welcome Back {currentUser?.email}</h2></li> 
+          <li><h2 className="nav-banner">Welcome Back {currentUser?.email}</h2></li> 
           <li><button onClick={logout}>Logout</button></li>
           <li><Link to="/admin-page">Admin Page</Link></li>
         </ul> :
