@@ -1,13 +1,19 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
+import { getAuth, signOut } from 'firebase/auth'
+import { useNavigate } from 'react-router';
 
 const Navbar = () => {
   const currentUser = useContext(AuthContext)
-  console.log(currentUser);
+  const {dispatch} = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const logout = () => {
-      // const { currentUser } = useContext(LOGOUT)
+      const auth = getAuth()
+      signOut(auth)
+      dispatch({type:"LOGOUT", payload:currentUser})
+      navigate("/")
     }
   return (
     <nav className="main-nav">

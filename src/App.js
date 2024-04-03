@@ -9,11 +9,11 @@ import AdminPage from './pages/AdminPage'
 import { AuthContext } from "./context/AuthContext";
 import AddData from "./components/AddData";
 import Register from "./pages/Register";
+import InactivityModel from "./components/InactivityModel";
 
 function App() {
 
   const { currentUser } = useContext(AuthContext)
-  console.log(currentUser);
   const RequireAuth = ({children}) => {
     return currentUser ? children : <Navigate to="/" />
   }
@@ -21,6 +21,7 @@ function App() {
   const Layout = () => {
     return (<div className="main-layout">
       <Navbar />
+      {/* <InactivityModel /> */}
       <Outlet />
       <Footer />
     </div>)
