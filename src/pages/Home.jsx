@@ -6,24 +6,46 @@ import { db } from '../Firebase'
 
 const Home = () => {
 
-  const [photos, getPhotos] = useState()
+  const [photos, setPhotos] = useState([])
 
   const auth = getAuth()
 
   useEffect(()=> {
     const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, ))
+      let list = []
+      try{
+        const querySnapshot = await getDocs(collection(db, "photo"))
+        querySnapshot.forEach((doc)=> {
+          list.push({id: doc.id, ...doc.data()})
+        })
+        setPhotos(list)
+        console.log(list);
+      } catch (err){
+        console.log(err);
+      }
+      
     }
+    
+    fetchData()
   }, [])
+
+  // const imageLinks = photos?.filter(p => p.imageLink)
 
   return (
     
     <div className="home">
       <Banner />
       <div className="all-photos">
-        {
-
+        { 
+          photos?.map((photo) => {
+            return (
+              <div className="">
+            <img src={photo.imageLink} alt="" />
+            </div>
+            ) 
+            })
         }
+        
       </div>
     </div>
   )
