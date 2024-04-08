@@ -44,9 +44,7 @@ function App() {
       {
         path:"/admin-page",
         element:
-          <RequireAuth>
             <AdminPage />
-          </RequireAuth>
           
       },
       {

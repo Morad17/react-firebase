@@ -19,7 +19,6 @@ const Home = () => {
           list.push({id: doc.id, ...doc.data()})
         })
         setPhotos(list)
-        console.log(list);
       } catch (err){
         console.log(err);
       }
@@ -37,9 +36,9 @@ const Home = () => {
       <Banner />
       <div className="all-photos">
         { 
-          photos?.map((photo) => {
+          photos?.map((photo, key) => {
             return (
-              <div className="">
+              <div className="" key={key}>
             <img src={photo.imageLink} alt="" />
             </div>
             ) 

@@ -3,7 +3,6 @@ import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/fires
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 import {  auth, db, storage } from '../Firebase';
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const AddData = () => {
 
@@ -16,12 +15,13 @@ const AddData = () => {
     })
     const [pictureFile, setPictureFile] = useState()
     const [percent, setPercent] = useState(null)
-    const [uid, setUid] = useState('')
+    const [succModal, setSuccModal] = useState(null)
 
+    //Uploading Photo to firestore //
     useEffect(()=> {
         const uploadImage = () => {
             const uniqueName = pictureData.name + new Date().getTime()
-            const storageRef = ref(storage, uniqueName)
+            const storageRef = ref(storage, `holiday-photos/${uniqueName}`)
             const metadata = {customMetadata:{'user': pictureData.user}}
             const uploadTask = uploadBytesResumable(storageRef, pictureFile, metadata)
 
@@ -47,13 +47,15 @@ const AddData = () => {
                 () => {
                     // Handle successful uploads on complete
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                   setPictureData((prev)=> ({...prev, imageLink:downloadURL}))
-                    });
+                    setPictureData((prev)=> ({...prev, imageLink:downloadURL}))
+                    })
                 },
                 console.log(pictureData, percent)
-                )}
+                )
+            }
         uploadImage()
         }, [pictureFile])
+    //Uploading Photo Data To Firestore DB//
     useEffect(()=> {
         const user = JSON.parse(localStorage.getItem("user"))
         setPictureData({...pictureData, user:user.uid })
@@ -75,12 +77,21 @@ const AddData = () => {
             const res = await addDoc(collection(db, "photo"), {
                         ...pictureData
                     });
+            successModal()
             console.log(res);
         } catch (err){
             console.log(err);
         }
         
-    }   
+    }
+
+    const successModal = () => {
+        setSuccModal(true)
+        const timer =  setTimeout(() => {
+            setSuccModal(null)
+        }, 2000)
+        return () => clearTimeout(timer)
+    }
 
   return (
 
@@ -97,6 +108,11 @@ const AddData = () => {
             <input required type="date" name="dateTaken" onChange={setData}/>
             <button className="submit-button" disabled={percent !== null && percent < 100} type="submit">Submit</button>
         </form>
+        {   succModal ? 
+            <div className="success-modal">
+            {pictureData.user.email} You have Successfully Added {pictureData.name} to the Gallery!
+            </div> : ""
+        }
     </div>
   )
 }

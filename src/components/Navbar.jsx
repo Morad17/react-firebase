@@ -5,14 +5,16 @@ import { getAuth, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router';
 
 const Navbar = () => {
-  const currentUser = useContext(AuthContext)
+  const currentUser = JSON.parse(localStorage.getItem("user"))
   const {dispatch} = useContext(AuthContext)
   const navigate = useNavigate()
 
   const logout = () => {
+      console.log(currentUser);
       const auth = getAuth()
       signOut(auth)
       dispatch({type:"LOGOUT", payload:currentUser})
+      localStorage.clear()
       navigate("/")
     }
   return (
@@ -20,14 +22,26 @@ const Navbar = () => {
       {
         currentUser ? 
         <ul className="registered-links">
-          <li><Link to="/">Home</Link></li>
-          <li><h2 className="nav-banner">Welcome Back {currentUser?.email}</h2></li> 
-          <li><button onClick={logout}>Logout</button></li>
-          <li><Link to="/admin-page">Admin Page</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <h2 className="nav-banner">Welcome Back {currentUser?.email}</h2>
+          </li> 
+          <li>
+            <button onClick={logout}>Logout</button>
+          </li>
+          <li>
+            <Link to="/admin-page"><button>Admin Page</button></Link>
+          </li>
         </ul> :
         <ul className="unregistered-links">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/">Register</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/">Register</Link>
+          </li>
         </ul>
       }
       
