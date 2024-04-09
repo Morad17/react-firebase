@@ -7,7 +7,7 @@ import {  auth, db, storage } from '../Firebase';
 const AddData = () => {
 
     const [ pictureData, setPictureData ] = useState({
-        name: '',
+        title: '',
         location: '',
         dateTaken: null,
         imageLink: '',
@@ -20,8 +20,9 @@ const AddData = () => {
     //Uploading Photo to firestore //
     useEffect(()=> {
         const uploadImage = () => {
-            const uniqueName = pictureData.name + new Date().getTime()
-            const storageRef = ref(storage, `holiday-photos/${uniqueName}`)
+            const user = JSON.parse(localStorage.getItem("user"))
+            const storedName = pictureData.title + new Date().getTime()
+            const storageRef = ref(storage, `holiday-photos/${storedName}`)
             const metadata = {customMetadata:{'user': pictureData.user}}
             const uploadTask = uploadBytesResumable(storageRef, pictureFile, metadata)
 
@@ -47,20 +48,17 @@ const AddData = () => {
                 () => {
                     // Handle successful uploads on complete
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    setPictureData((prev)=> ({...prev, imageLink:downloadURL}))
-                    })
+                    setPictureData((prev)=> ({...prev, 
+                        imageLink:downloadURL, 
+                        storedName:storedName,
+                        user:user.uid
+                    }))})
                 },
                 console.log(pictureData, percent)
                 )
             }
         uploadImage()
         }, [pictureFile])
-    //Uploading Photo Data To Firestore DB//
-    useEffect(()=> {
-        const user = JSON.parse(localStorage.getItem("user"))
-        setPictureData({...pictureData, user:user.uid })
-    }, [])
-    
 
     const setData = (e) => {
         setPictureData(prev => ({...prev, [e.target.name]:e.target.value }))
@@ -98,14 +96,23 @@ const AddData = () => {
     <div className="add-data">
         <h1>Add My Picture</h1>
         <form onSubmit={handleSubmit}>
-            <label >Upload Image</label>
-            <input required type="file" name="photo" accept="image/*" onChange={handlePicture}/>
-            <label >Title</label>          
-            <input required type="text" name="name" onChange={setData}/>
-            <label >Location</label>
-            <input required type="text" name="location" onChange={setData}/>
-            <label >Date Taken</label>
-            <input required type="date" name="dateTaken" onChange={setData}/>
+            <div className="group">
+                <label >Upload Image</label>
+                <input required type="file" name="photo" accept="image/*" 
+                    onChange={handlePicture}/>
+            </div>
+            <div className="group">
+                <label >Title</label>          
+                <input required type="text" name="name" onChange={setData}/>
+            </div>
+            <div className="group">
+                <label >Location</label>
+                <input required type="text" name="location" onChange={setData}/>
+            </div>
+            <div className="group">
+                <label >Date Taken</label>
+                <input required type="date" name="dateTaken" onChange={setData}/>
+            </div>
             <button className="submit-button" disabled={percent !== null && percent < 100} type="submit">Submit</button>
         </form>
         {   succModal ? 

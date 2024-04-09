@@ -5,7 +5,6 @@ const AdminPage = () => {
   return (
     <div>
       <AddData />
-
     </div>
   )
 }
