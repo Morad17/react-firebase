@@ -46,7 +46,7 @@ const AddData = () => {
                     console.log(error)
                 }, 
                 () => {
-                    // Handle successful uploads on complete
+                    // Handle successful uploads on complete //
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     setPictureData((prev)=> ({...prev, 
                         imageLink:downloadURL, 
@@ -57,9 +57,9 @@ const AddData = () => {
                 console.log(pictureData, percent)
                 )
             }
-        uploadImage()
+        pictureFile && uploadImage()
         }, [pictureFile])
-
+        // Sets Users Input to Picture Data
     const setData = (e) => {
         setPictureData(prev => ({...prev, [e.target.name]:e.target.value }))
         console.log(pictureData);
@@ -75,12 +75,25 @@ const AddData = () => {
             const res = await addDoc(collection(db, "photo"), {
                         ...pictureData
                     });
-            successModal()
             console.log(res);
+            successModal()
+            //Resetting Inputs after Succes Submit //
+            setPictureData({
+                title: '',
+                location: '',
+                dateTaken: null,
+                imageLink: '',
+                user: ''
+            })
+            setPictureFile(null)
+            e.target.reset()            
         } catch (err){
             console.log(err);
         }
         
+    }
+    const clearForm = () => {
+
     }
 
     const successModal = () => {
@@ -98,7 +111,7 @@ const AddData = () => {
         <form onSubmit={handleSubmit}>
             <div className="group">
                 <label >Upload Image</label>
-                <input required type="file" name="photo" accept="image/*" 
+                <input required type="file" name="photo" accept="image/jpg, image/jpeg, image/png," 
                     onChange={handlePicture}/>
             </div>
             <div className="group">

@@ -20,6 +20,7 @@ body{
         min-height: 400px;
         background-color: rgb(82, 52, 82);
         margin: 0;
+        margin-bottom: 5vh;
         padding: 0;
         display: flex;
         flex-direction: row;
@@ -56,7 +57,7 @@ body{
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-auto-rows: 300px;
     grid-auto-flow: dense;
-
+    margin: 5vh;
     .photo img{
         width: 100%;
         height: auto;
