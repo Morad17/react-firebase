@@ -5,6 +5,7 @@ import Login from '../components/Login'
 import explore from '../assets/icons/explore.png'
 import rate from '../assets/icons/rate.png'
 import upload from '../assets/icons/upload.png'
+import bannerImg from '../assets/images/banner-background.jpg'
 
 
 const Banner = () => {
