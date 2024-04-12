@@ -10,10 +10,11 @@ import bannerImg from '../assets/images/banner-background.jpg'
 
 const Banner = () => {
 
-    const currentUser = JSON.parse(localStorage.getItem("user"))
+  const currentUser = JSON.parse(localStorage.getItem("user"))
 
   return (
     <div className="banner">
+      <img className="banner-image" src={bannerImg} alt="sunset" />
         <div className="icon-group">
           <div className="icons">
             <img src={explore} alt="" />

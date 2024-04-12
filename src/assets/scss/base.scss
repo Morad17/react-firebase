@@ -2,6 +2,7 @@
 body{
     margin: 0;
     padding: 0;
+    z-index: 11;
 }
 
 
@@ -25,12 +26,18 @@ body{
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        background: url(../images/banner-background.jpg) ;
-        background-size:cover ;
+        align-items: center;
+        z-index: 1;
+    }
+    .banner-image{
+        z-index: -1;
+        width: 35%;
+        position: absolute;
     }
     .login-group{
         margin: auto 0;
         align-content: center;
+        z-index: 111;
     }
     .login-and-register{
         color: whitesmoke;
@@ -38,6 +45,7 @@ body{
     .icon-group{
         display: flex;
         flex-direction: column;
+        z-index: 111;
     }
     .icon-group .icons{
         color: white;
