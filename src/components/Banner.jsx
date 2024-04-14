@@ -5,7 +5,7 @@ import Login from '../components/Login'
 import explore from '../assets/icons/explore.png'
 import rate from '../assets/icons/rate.png'
 import upload from '../assets/icons/upload.png'
-import bannerImg from '../assets/images/banner-background.jpg'
+import bannerImg from '../assets/images/banner-background-cropped.jpg'
 
 
 const Banner = () => {
@@ -14,7 +14,6 @@ const Banner = () => {
 
   return (
     <div className="banner">
-      <img className="banner-image" src={bannerImg} alt="sunset" />
         <div className="icon-group">
           <div className="icons">
             <img src={explore} alt="" />
@@ -32,6 +31,7 @@ const Banner = () => {
             <p>Upload Your Own Photo's For Others To Admire</p>
           </div>
         </div>
+        <img className="banner-image" src={bannerImg} alt="sunset" />
         <div className="login-group">
             {currentUser ? "" :
             <div className="login-and-register">
