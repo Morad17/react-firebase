@@ -147,3 +147,43 @@ body{
         padding-top: 3px;
     } 
 }
+
+//Admin Sidebar Nav //
+
+.admin-sidebar{
+    width: 20vw;
+    height: 100vh;
+    align-items: center;
+    align-content: center;
+    background-color: #1f014b;
+    .profile-photo{
+        text-align: center;
+        img{
+            width: 35%;
+            background-color: white;
+        }
+    }
+    ul{
+        list-style: none;
+        padding: 0;
+        .favourite-icon, .dashboard-icon{
+            width: 30px;
+           margin-right: 20px;
+        }
+        .all-photos-icon, .add-photos-icon{
+            width: 35px; 
+            margin-right: 20px;
+        }
+    }
+    .sidebar-links{
+        padding: 20px;
+        margin: 0 25px 0 0;
+        font-size: 25px;
+        color: white;
+        border: 1px solid black;
+        a{
+            text-decoration: none;
+            color: white;
+        }
+    }
+}
