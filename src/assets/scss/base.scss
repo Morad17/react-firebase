@@ -150,6 +150,13 @@ body{
     } 
 }
 
+//Admin Page //
+
+.admin-page{
+    display: flex;
+    flex-direction: row;
+}
+
 //Admin Sidebar Nav //
 
 .admin-sidebar{
@@ -193,9 +200,9 @@ body{
 //Admin Dashboard //
 
 .dashboard{
-    .impressions{
-        .photos-submitted-card{
-            @include card;
-        }
+    display: flex;
+    .card-vi{
+        @include impressions-card;
     }
 }
+
