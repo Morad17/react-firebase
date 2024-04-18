@@ -1,6 +1,33 @@
 @mixin impressions-card {
-    padding: 5vw;
-    background-color: gray;
-    border: 1px solid grayscale($color: #262626);
-    
+    min-height: 5vh;
+    min-width: 20vw;
+    background-color: #fafafa;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 10px;
+    .top-line{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    img{
+        width: 35px;
+        height: 35px;
+        background-color: #fafafa;
+        padding: 5px;
+        border-radius: 10px;
+    }
+    h3{
+        font-size: 30px;
+        padding: 0;
+        margin: 10px;
+        color: #3a017f;
+    }
+    .card-number{
+        font-size: 45px;
+        margin: 0;
+    }
+    .card-link{
+        font-size: 20px;
+    }
 }
