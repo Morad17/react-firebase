@@ -11,6 +11,7 @@ import subs from '../assets/icons/subs.png'
 import views from '../assets/icons/views.png'
 import uploaded from '../assets/icons/uploaded.png'
 import shared from '../assets/icons/shared.png'
+import StatGraph from '../components/StatGraph'
 
 
 
@@ -24,6 +25,7 @@ const AdminPage = () => {
           <div className="views-card card-vi">
             <div className="top-line">
               <h3 className="card-title">Total Views</h3>
+              <div className="shape"></div>
               <img src={views} alt="" />
             </div>
             <p className="card-number">100</p>
@@ -48,26 +50,24 @@ const AdminPage = () => {
             <Link><p className="card-link">All Photos</p></Link>
           </div>
         </section>
-        <section className="top-picture">
-        <div className="top-picture-card">
-          <h3>Name</h3>
-          <img src={topPhoto} alt="" />
-          <div className="top-photo-info">
-            <p className="views"><span>100</span> Views</p>
-            <p className="likes"><span>200</span> Likes</p> 
+        <section className="stats-row">
+          <div className="top-picture-card">
+            <h3>Name</h3>
+            <img src={topPhoto} alt="" />
+            <div className="top-photo-info">
+              <p className="views"><span>100</span> Views</p>
+              <p className="likes"><span>200</span> Likes</p> 
+            </div>
+            <div className="top-photo-info-2">
+              <p className="downloads"><span>50</span>Downloads</p>
+              <p className="shared"><span>50 </span>Shares</p>
+            </div>
           </div>
-          <div className="top-photo-info-2">
-            <p className="downloads"><span>50</span>Downloads</p>
-            <p className="shared"><span>50 </span>Shares</p>
+          <div className="graph">
+            <StatGraph />
           </div>
-          
-         
-         
-        </div>
         </section> 
-        <section className="stat-graph">
-
-        </section>
+          
         <section className="user-metrics">
           <div className="photos-uploaded-card card-vi">
             <div className="top-line">

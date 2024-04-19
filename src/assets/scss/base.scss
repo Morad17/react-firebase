@@ -231,15 +231,17 @@ body{
     .photos-shared-card{
         background-color: #91afff;
     }
-    .top-picture{
+    .stats-row{
         margin: 2vh 20px;
-        
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
         .top-picture-card{
             // display: flex;
             // flex-direction: row;
             min-height: 5vh;
             max-width: 20vw;
-            background-color: #ababab;
+            background-color:  rgb(237, 237, 237);
             border-radius: 5px;
             box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
             padding: 10px;
@@ -265,8 +267,14 @@ body{
                     color: black;
                 }
             }
+            
 
+        }
+        .graph{
+            min-width:950px;
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+            background-color: rgb(237, 237, 237);
+            
         }
     }
 }
-
