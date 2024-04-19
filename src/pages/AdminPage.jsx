@@ -64,7 +64,7 @@ const AdminPage = () => {
          
          
         </div>
-        </section>
+        </section> 
         <section className="stat-graph">
 
         </section>
