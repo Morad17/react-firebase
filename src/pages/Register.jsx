@@ -7,7 +7,10 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 const Register = () => {
 
   const [ userData, setUserData ] = useState({
-        username: '',
+        uid: '',
+        firstName: '',
+        Surname: '',
+        country: '',
         email: '',
         password: '',
     })
@@ -30,7 +33,10 @@ const Register = () => {
       try{
           const res = await createUserWithEmailAndPassword( auth, userData.email, userData.password)
           await setDoc(doc(db, "users", res.user.uid), {
-              name: res.user.uid,
+              uid: res.user.uid,
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              country: userData.country,
               email: res.user.email,
               timestamp: serverTimestamp()
           })
@@ -47,8 +53,12 @@ const Register = () => {
   return (
     <div className="create-user">
         <form onSubmit={handleSubmit}>
-            <label >Username</label>
-            <input required type="text" name="username" onChange={setData}/>
+            <label >First Name</label>
+            <input required type="text" name="firstName" onChange={setData}/>
+            <label >Last Name</label>
+            <input required type="text" name="surname" onChange={setData}/>
+            <label >Country</label>
+            <input required type="text" name="country" onChange={setData}/>
             <label >Password</label>          
             <input required type="text" name="password" onChange={setData}/>
             <div className="second-row">
