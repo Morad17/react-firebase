@@ -126,7 +126,7 @@ const AddData = () => {
                 <label >Date Taken</label>
                 <input required type="date" name="dateTaken" onChange={setData}/>
             </div>
-            <button className="submit-button" disabled={percent !== null && percent < 100} type="submit">Submit</button>
+            <button className="add-data-submit-button" disabled={percent !== null && percent < 100} type="submit">Submit</button>
         </form>
         {   succModal ? 
             <div className="success-modal">

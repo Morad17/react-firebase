@@ -38,9 +38,18 @@ const Login = () => {
   return (
     <div className="login-form">
         <form onSubmit={handleLogin}>
-            <input type="email" placeholder="email" onChange={e => setEmail(e.target.value)} />
-            <input type="password" placeholder="password" onChange={e => setPassword(e.target.value)}/>
-            <button type="submit">Submit</button>
+            <div className="row">
+                <label htmlFor="">Email</label>
+                <input type="email" placeholder="email" onChange={e => setEmail(e.target.value)} />
+            </div> 
+            <div className="row">
+                <label htmlFor="">Password</label>
+                <input type="password" placeholder="password" onChange={e => setPassword(e.target.value)}/>
+            </div>
+            <div className="submit-row">
+                <button className="submit-button" type="submit">Submit</button>
+            </div>
+            
             {error && <div>Email or Password Incorrect</div>}
         </form>
     </div>

@@ -9,7 +9,7 @@ const Register = () => {
   const [ userData, setUserData ] = useState({
         uid: '',
         firstName: '',
-        Surname: '',
+        surname: '',
         country: '',
         email: '',
         password: '',
@@ -35,7 +35,7 @@ const Register = () => {
           await setDoc(doc(db, "users", res.user.uid), {
               uid: res.user.uid,
               firstName: userData.firstName,
-              lastName: userData.lastName,
+              lastName: userData.surname,
               country: userData.country,
               email: res.user.email,
               timestamp: serverTimestamp()
@@ -48,6 +48,9 @@ const Register = () => {
       } catch (err){
           console.log(err);
           setMessage("error")
+          setTimeout(()=> {
+            navigate("/")
+          },3000)
       }
   }   
   return (
@@ -76,8 +79,8 @@ const Register = () => {
             <input required type="text" name="country" onChange={setData}/>
           </div>
           <div className="row">
-           <label >Display Picture</label>
-            <input required type="file" name="display-picture"/> 
+           <label >Add A Display Picture</label>
+            <input className="upload-input" required type="file" name="display-picture"/> 
           </div>
           <div className="submit-row">
             <button className="submit-button" type="submit">Submit</button>
