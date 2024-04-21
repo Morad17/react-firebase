@@ -27,23 +27,44 @@ body{
         padding: 0;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         z-index: 1;
     }
     .banner-image{
-        object-fit: contain;
         height: 100%;
-        width: 100%;
+        img{
+           object-fit: contain;
+            height: 100%;
+        }
+        
     }
     .login-group{
         margin: auto 0;
         align-content: center;
         z-index: 111;
+        color: white;
+        .login-and-register{
+                border: 4px solid white;
+                border-radius: 10px;
+                width: 500px;
+                
+            }
+        .form-selector{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                .active{
+                    border: 4px solid red;
+                }
+            hr{
+                margin: 1vw;
+            }
+        }
+
+
     }
-    .login-and-register{
-        color: whitesmoke;
-    }
+    
     .icon-group{
         display: flex;
         flex-direction: column;
@@ -63,6 +84,55 @@ body{
     }
 }
 
+// Login and Register Form //
+
+.login-form{
+    display: flex;
+}
+.register-form{
+     
+    form{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 1vw;
+        
+        .row{
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+            width: 100%;
+            margin-bottom: 1vh;
+        }
+        .row-2{
+            width: 100%;
+            margin-bottom: 1vh;
+            .gap{
+                margin-left: 10px;
+            }
+            display: flex;
+            flex-direction: row;
+            .name-row{
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+            width: 100%;
+        }
+        }
+
+        .submit-row{
+            width: 100%;
+        }
+    }
+    
+
+    .success-message{
+        display: none;
+    }
+    
+}
 // Photo Gallery
 
 .photo-gallery{
@@ -104,19 +174,6 @@ body{
     padding: 0;
     margin: 0;
  }
-}
-
-
-
-//User Creation //
-.create-user{
-    .second-row{
-        
-    }
-
-}
-.success-message{
-    display: none;
 }
 
 //Add Data

@@ -51,24 +51,39 @@ const Register = () => {
       }
   }   
   return (
-    <div className="create-user">
+    <div className="register-form">
         <form onSubmit={handleSubmit}>
-            <label >First Name</label>
-            <input required type="text" name="firstName" onChange={setData}/>
-            <label >Last Name</label>
-            <input required type="text" name="surname" onChange={setData}/>
-            <label >Country</label>
-            <input required type="text" name="country" onChange={setData}/>
+          <div className="row-2">
+            <div className="name-row">
+              <label >First Name</label>
+              <input required type="text" name="firstName" onChange={setData}/>
+            </div>
+            <div className="name-row gap">
+              <label >Last Name</label>
+              <input required type="text" name="surname" onChange={setData}/>
+            </div>
+          </div>
+          <div className="row">
             <label >Password</label>          
             <input required type="text" name="password" onChange={setData}/>
-            <div className="second-row">
-                 <label >Email</label>
+          </div>
+          <div className="row">
+            <label >Email</label> 
             <input required type="text" name="email" onChange={setData}/>
-            <label >Display Picture</label>
+          </div>
+          <div className="row">
+            <label >Country</label>
+            <input required type="text" name="country" onChange={setData}/>
+          </div>
+          <div className="row">
+           <label >Display Picture</label>
             <input required type="file" name="display-picture"/> 
-            </div>
+          </div>
+          <div className="submit-row">
+            <button className="submit-button" type="submit">Submit</button>
+          </div>
            
-            <button type="submit">Submit</button>
+            
             
            
         </form>

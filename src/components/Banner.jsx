@@ -6,12 +6,14 @@ import explore from '../assets/icons/explore.png'
 import rate from '../assets/icons/rate.png'
 import upload from '../assets/icons/upload.png'
 import bannerImg from '../assets/images/banner-background-cropped.jpg'
+import Register from './Register'
 
 
 const Banner = () => {
 
   const currentUser = JSON.parse(localStorage.getItem("user"))
-
+  const [loginActive, SetLoginActive ] = useState(null)
+  
   return (
     <div className="banner">
         <div className="icon-group">
@@ -31,20 +33,32 @@ const Banner = () => {
             <p>Upload Your Own Photo's For Others To Admire</p>
           </div>
         </div>
-        <img className="banner-image" src={bannerImg} alt="sunset" />
+        <div className="banner-image">
+          <img className="" src={bannerImg} alt="sunset" />
+        </div>
+        
         <div className="login-group">
-            {currentUser ? "" :
-            <div className="login-and-register">
-                <div className="login-section">
-                    <h2>Login To Get Started</h2>
-                    <Login />
-                </div>
-                <div className="create-user-section">
+          <h2>Login To Get Started</h2>
+          {currentUser ? "" :
+          <div className="login-and-register">
+              <div className="form-selector">
+                <h3 className={loginActive ? "" : "active"} onClick={() => SetLoginActive(null)}>Register</h3>
+                <hr />
+                <h3 className={loginActive ? "active" : ""} onClick={() => SetLoginActive(true)}>Login</h3>
+              </div>
+              {loginActive ?
+                    <Login /> : <Register />
+              }
+                  
+
+
+
+                {/* <div className="create-user-section">
                     <h2>Don't have an accout? Create A New Account Here</h2>
                     <button>
                     <Link to="/register">Register</Link>
                     </button>
-                </div>
+                </div> */}
             </div>
             }
         </div>

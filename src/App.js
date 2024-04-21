@@ -8,7 +8,6 @@ import AdminPage from './pages/AdminPage'
 
 import { AuthContext } from "./context/AuthContext";
 import AddData from "./components/AddData";
-import Register from "./pages/Register";
 import InactivityModel from "./components/InactivityModel";
 
 function App() {
@@ -35,11 +34,6 @@ function App() {
         path: "/",
         element: 
           <Home />
-      },
-      {
-        path:"/register",
-        element:
-          <Register />
       },
       {
         path:"/admin-page",
