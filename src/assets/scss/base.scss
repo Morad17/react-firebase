@@ -194,6 +194,10 @@ body{
             width: 100%;
             
         }
+        .country-selector{
+            color: black;
+            cursor: pointer;
+        }
     }
     
 
@@ -236,10 +240,11 @@ body{
     margin: 0;
     padding: 1.75vh;
     border-bottom: 3px solid white;
-    li a{
+    .link{
         text-decoration: none;
         color: white;
         font-size: 19px;
+        cursor: pointer;
     }
 }
  .nav-banner{

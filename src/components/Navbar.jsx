@@ -23,24 +23,24 @@ const Navbar = () => {
         currentUser ? 
         <ul className="registered-links">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/"className="link" >Home</Link>
           </li>
           <li>
             <h2 className="nav-banner">Welcome Back {currentUser?.email}</h2>
           </li> 
-          <li>
-            <button onClick={logout}>Logout</button>
+          <li className="link" onClick={logout}>
+            Logout
           </li>
           <li>
-            <Link to="/admin-page"><button>Admin Page</button></Link>
+            <Link className="link" to="/admin-page">Admin Page</Link>
           </li>
         </ul> :
         <ul className="unregistered-links">
           <li>
-            <Link to="/">Home</Link>
+            <Link className="link" to="/">Home</Link>
           </li>
           <li>
-            <Link to="/">Register</Link>
+            <Link className="link" to="/">Register</Link>
           </li>
         </ul>
       }

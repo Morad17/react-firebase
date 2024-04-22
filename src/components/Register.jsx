@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router';
+import Select from 'react-select'
+import countryList from 'react-select-country-list'
 import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/firestore"; 
 import { db } from '../Firebase';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 const Register = () => {
 
@@ -14,20 +17,26 @@ const Register = () => {
         email: '',
         password: '',
     })
+  const [country, setCountry] = useState()
   const [message, setMessage ] = useState("")
+
+  const options = useMemo(()=> countryList().getData(), [])
     
   const auth = getAuth()
   const navigate = useNavigate()
-  const successMessage = () => {
-      document.getElementsByClassName("success-message")[0].style.display = "flex"
-  }
-  const errorMessage = () => {
 
-  }
   const setData = (e) => {
       setUserData(prev => ({...prev, [e.target.name]:e.target.value }))
       console.log(userData);
   }
+const countryHandler = val => {
+  const countryName = val.label
+  setCountry(countryName)
+  console.log(country);
+  setUserData(prev => ({...prev, country:countryName}) )
+  console.log(userData);
+}
+
   const handleSubmit = async (e) =>  {
       e.preventDefault()
       try{
@@ -68,7 +77,7 @@ const Register = () => {
           </div>
           <div className="row">
             <label >Password</label>          
-            <input required type="text" name="password" onChange={setData}/>
+            <input required type="password" name="password" onChange={setData}/>
           </div>
           <div className="row">
             <label >Email</label> 
@@ -76,8 +85,8 @@ const Register = () => {
           </div>
           <div className="row">
             <label >Country</label>
-            <input required type="text" name="country" onChange={setData}/>
-          </div>
+            <Select className="country-selector" required options={options} value={country} onChange={(val)=> countryHandler(val)} /> 
+          </div> 
           <div className="row">
            <label >Add A Display Picture</label>
             <input className="upload-input" required type="file" name="display-picture"/> 

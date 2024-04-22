@@ -16,7 +16,6 @@ const Login = () => {
     const {dispatch} = useContext(AuthContext)
     const currentUser = JSON.parse(localStorage.getItem("user"))
 
-
     const handleLogin = (e) => {
         e.preventDefault()
         initializeApp(firebaseConfig)
