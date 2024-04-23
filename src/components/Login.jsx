@@ -29,7 +29,9 @@ const Login = () => {
         .catch((error) => {
             console.log(error);
             setError(true)    
-            
+            setTimeout(()=> {
+            setError(null)
+          },1500)
         });
         navigate("/")
     }

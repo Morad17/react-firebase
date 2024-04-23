@@ -31,7 +31,6 @@ const Register = () => {
   }
 const countryHandler = val => {
   const countryName = val.label
-  setCountry(countryName)
   console.log(country);
   setUserData(prev => ({...prev, country:countryName}) )
   console.log(userData);
@@ -52,12 +51,14 @@ const countryHandler = val => {
           console.log(res.user.uid);
           setMessage("success")
           setTimeout(()=> {
+            setMessage("")
             navigate("/")
           },3000)
       } catch (err){
           console.log(err);
           setMessage("error")
           setTimeout(()=> {
+            setMessage("")
             navigate("/")
           },3000)
       }
@@ -85,7 +86,7 @@ const countryHandler = val => {
           </div>
           <div className="row">
             <label >Country</label>
-            <Select className="country-selector" required options={options} value={country} onChange={(val)=> countryHandler(val)} /> 
+            <Select className="country-selector" required options={options} value={country} onChange={countryHandler} /> 
           </div> 
           <div className="row">
            <label >Add A Display Picture</label>
