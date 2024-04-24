@@ -35,7 +35,7 @@ const PhotoGallery = () => {
                 {/* <button onClick={deletePhoto(photo.id)}>Delete Photo</button> */}
               </div>
             ) 
-            })
+            }) 
         }
     </div>
   )

@@ -49,10 +49,6 @@ const Banner = () => {
               {loginActive ?
                     <Login /> : <Register />
               }
-                  
-
-
-
                 {/* <div className="create-user-section">
                     <h2>Don't have an accout? Create A New Account Here</h2>
                     <button>
