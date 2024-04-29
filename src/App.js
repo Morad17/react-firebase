@@ -45,6 +45,10 @@ function App() {
         path: "/add-data",
         element: <AddData />
       },
+      {
+        path: "/photo-page/:id",
+        element: <AddData />
+      },
     
     ]
     }

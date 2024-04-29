@@ -111,6 +111,8 @@ body{
         .icons{
             color: white;
             margin: 10px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid $main-pink;
             display: flex;
             flex-direction: row;
             img{
@@ -121,6 +123,9 @@ body{
             }
             p{
             }
+        }
+        .group{
+            
         }
     }
 }

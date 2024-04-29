@@ -1,9 +1,12 @@
 import React,{useEffect, useState} from 'react'
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../Firebase'
+import { Link } from 'react-router-dom'
 
 
 const PhotoGallery = () => {
+
+  const [photoPageOn, setPhotoPageOn] = useState(false)
 
     const [photos, setPhotos] = useState([])
     //Get Photo Data //
@@ -30,9 +33,11 @@ const PhotoGallery = () => {
         { 
           photos?.map((photo, key) => {
             return (
-              <div className="photo" key={key}>
+              <div className="photo" key={key} >
                 <img src={photo.imageLink} alt="" />
-                {/* <button onClick={deletePhoto(photo.id)}>Delete Photo</button> */}
+                <Link to={`/photo-page/${photo.storedName}`}>Photo</Link>
+                
+               
               </div>
             ) 
             }) 

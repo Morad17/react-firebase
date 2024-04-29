@@ -2,7 +2,9 @@ import React from 'react'
 import AddData from '../components/AddData'
 import AdminSidebar from '../components/AdminSidebar'
 import { Link } from 'react-router-dom'
-
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
+import { db } from '../Firebase'
+//image imports //
 import topPhoto from '../assets/images/stock-top-picture.JPG'
 import downloaded from '../assets/icons/downloaded.png'
 import dashboard from '../assets/icons/dashboard.png'
@@ -17,6 +19,8 @@ import StatGraph from '../components/StatGraph'
 
 
 const AdminPage = () => {
+
+
   return (
     <div className="admin-page">
       <AdminSidebar />
