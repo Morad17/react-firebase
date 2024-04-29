@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 import { db } from '../Firebase'
 
-const PhotoPage = () => {
+const PhotoPage = ({}) => {
 
   const locate = useLocation()
   const id = locate.pathname.split('/')[2]
@@ -22,8 +22,26 @@ const PhotoPage = () => {
     }
     fetchPhotoData()
   },[])
+
+           {/* dateTaken
+imageLink
+location
+name
+storedName
+title
+user*/}
+
   return (
-    <div>{console.log(photoData)}Path</div>
+    <div className="photo-page">
+      <div className="wrapper"></div>
+      <div className="photo-details">
+        <h3 className="photo-name">{photoData.name}</h3>  
+        <img src={photoData.imageLink} alt="" />
+        <p>{photoData.date}</p>
+        <p>{photoData.location}</p>
+        <p>{}</p>
+      </div>
+    </div>
   )
 }
 
