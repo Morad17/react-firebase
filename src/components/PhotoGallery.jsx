@@ -35,7 +35,7 @@ const PhotoGallery = () => {
             return (
               <div className="photo" key={key} >
                 <img src={photo.imageLink} alt="" />
-                <Link to={`/photo-page/${photo.storedName}`}>Photo</Link>
+                <Link to={`/photo-page/${photo.id}`}>Photo</Link>
                 
                
               </div>

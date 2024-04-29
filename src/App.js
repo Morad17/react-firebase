@@ -9,6 +9,7 @@ import AdminPage from './pages/AdminPage'
 import { AuthContext } from "./context/AuthContext";
 import AddData from "./components/AddData";
 import InactivityModel from "./components/InactivityModel";
+import PhotoPage from "./pages/PhotoPage";
 
 function App() {
 
@@ -47,7 +48,7 @@ function App() {
       },
       {
         path: "/photo-page/:id",
-        element: <AddData />
+        element: <PhotoPage />
       },
     
     ]
