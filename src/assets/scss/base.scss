@@ -425,13 +425,21 @@ body{
     .wrapper{
         width: 100vw;
         height: 100vh;
-        background-color: rgb(0 0 0 / 75%);
+        background-color: rgb(0 0 0 / 50%);
         z-index: 1;
         position: absolute;
     }
     .photo-details{
         position: relative;
         z-index: 11;
+        width: 60vw;
+        height: 100vh;
+        margin: auto;
+        background-color: white;
+        h3{
+            margin: 0;
+            padding: 0;
+        }
     }
     img{
         max-width: 400px;

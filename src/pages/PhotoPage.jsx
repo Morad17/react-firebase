@@ -22,7 +22,6 @@ const PhotoPage = ({}) => {
     }
     fetchPhotoData()
   },[])
-
            {/* dateTaken
             imageLink
             location
@@ -35,11 +34,16 @@ const PhotoPage = ({}) => {
     <div className="photo-page">
       <div className="wrapper"></div>
       <div className="photo-details">
-        <h3 className="photo-name">{photoData.name}</h3>  
+        <div className="top-row">
+          <h3 className="photo-name">{photoData.name}</h3>  
+        </div>
         <img src={photoData.imageLink} alt="" />
-        <p>{photoData.date}</p>
-        <p>{photoData.location}</p>
-        <p>{}</p>
+        <div className="bottom-row">
+          <p>{photoData.date}</p>
+          <p>{photoData.location}</p>
+          <p>{}</p>
+        </div>
+        
       </div>
     </div>
   )

@@ -7,9 +7,9 @@ import Footer from "./components/Footer"
 import AdminPage from './pages/AdminPage'
 
 import { AuthContext } from "./context/AuthContext";
-import AddData from "./components/AddData";
 import InactivityModel from "./components/InactivityModel";
 import PhotoPage from "./pages/PhotoPage";
+import AddPhoto from "./components/AddPhoto";
 
 function App() {
 
@@ -43,8 +43,8 @@ function App() {
           
       },
       {
-        path: "/add-data",
-        element: <AddData />
+        path: "/add-photo",
+        element: <AddPhoto />
       },
       {
         path: "/photo-page/:id",

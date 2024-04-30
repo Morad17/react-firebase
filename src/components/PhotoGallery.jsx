@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom'
 
 const PhotoGallery = () => {
 
-  const [photoPageOn, setPhotoPageOn] = useState(false)
-
     const [photos, setPhotos] = useState([])
     //Get Photo Data //
     useEffect(()=> {
@@ -19,7 +17,6 @@ const PhotoGallery = () => {
               list.push({id: doc.id, ...doc.data()})
           })
           setPhotos(list)
-          
           } catch (err){
           console.log(err);
           }}
@@ -34,10 +31,9 @@ const PhotoGallery = () => {
           photos?.map((photo, key) => {
             return (
               <div className="photo" key={key} >
-                <img src={photo.imageLink} alt="" />
-                <Link to={`/photo-page/${photo.id}`}>Photo</Link>
-                
-               
+                <Link to={`/photo-page/${photo.id}`}>
+                  <img src={photo.imageLink} alt="" />
+                </Link>
               </div>
             ) 
             }) 

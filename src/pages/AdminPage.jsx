@@ -1,5 +1,5 @@
 import React from 'react'
-import AddData from '../components/AddData'
+import AddPhoto from '../components/AddPhoto'
 import AdminSidebar from '../components/AdminSidebar'
 import { Link } from 'react-router-dom'
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'

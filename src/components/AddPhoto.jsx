@@ -4,7 +4,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 import {  auth, db, storage } from '../Firebase';
 
-const AddData = () => {
+const AddPhoto = () => {
 
     const [ pictureData, setPictureData ] = useState({
         title: '',
@@ -25,8 +25,8 @@ const AddData = () => {
             const storageRef = ref(storage, `holiday-photos/${storedName}`)
             const metadata = {customMetadata:{'user': pictureData.user}}
             const uploadTask = uploadBytesResumable(storageRef, pictureFile, metadata)
-
-            uploadTask.on('state_changed', 
+            
+            uploadTask.on('state_changed',
                 (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
@@ -137,4 +137,4 @@ const AddData = () => {
   )
 }
 
-export default AddData
+export default AddPhoto
