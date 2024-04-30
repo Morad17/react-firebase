@@ -421,11 +421,17 @@ body{
 //Photo Page//
 
 .photo-page{
+    position: relative;
     .wrapper{
         width: 100vw;
         height: 100vh;
         background-color: rgb(0 0 0 / 75%);
         z-index: 1;
+        position: absolute;
+    }
+    .photo-details{
+        position: relative;
+        z-index: 11;
     }
     img{
         max-width: 400px;

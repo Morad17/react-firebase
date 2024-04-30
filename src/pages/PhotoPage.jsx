@@ -24,12 +24,12 @@ const PhotoPage = ({}) => {
   },[])
 
            {/* dateTaken
-imageLink
-location
-name
-storedName
-title
-user*/}
+            imageLink
+            location
+            name
+            storedName
+            title
+            user*/}
 
   return (
     <div className="photo-page">
