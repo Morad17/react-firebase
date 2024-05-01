@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
 import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/firestore"; 
-import { db } from '../Firebase';
+import { db, auth, storage } from '../Firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
@@ -17,29 +18,36 @@ const Register = () => {
         email: '',
         password: '',
     })
+  const [pictureFile, SetPictureFile ] = useState()
   const [country, setCountry] = useState()
   const [message, setMessage ] = useState("")
 
   const options = useMemo(()=> countryList().getData(), [])
-    
   const auth = getAuth()
   const navigate = useNavigate()
 
+  //Set Users Data //
   const setData = (e) => {
       setUserData(prev => ({...prev, [e.target.name]:e.target.value }))
       console.log(userData);
   }
+  //Set Country //
   const countryHandler = val => {
     const countryName = val.label
     console.log(country);
     setUserData(prev => ({...prev, country:countryName}) )
     console.log(userData);
   }
+  //Set Picture File // 
+  const handlePicture = (e) => {
+    SetPictureFile(e.target.files[0])
+    set
+  }
 
 //Uploading Photo to firestore //
 // useEffect(()=> {
 //   const uploadImage = () => {
-//       const storageRef = ref(storage, `profile-photo/${}`)
+//       const storageRef = ref(storage, `profile-photo/`)
 //       const metadata = {customMetadata:{'user': pictureData.user}}
 //       const uploadTask = uploadBytesResumable(storageRef, pictureFile, metadata)
       
@@ -132,7 +140,7 @@ const Register = () => {
           </div> 
           <div className="row">
            <label >Add A Display Picture</label>
-            <input className="upload-input" required type="file" name="display-picture"/> 
+            <input className="upload-input" required type="file" name="display-picture" onChange={handlePicture}/> 
           </div>
           <div className="submit-row">
             <button className="submit-button" type="submit">Submit</button>
