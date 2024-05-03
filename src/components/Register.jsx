@@ -17,7 +17,7 @@ const Register = () => {
         country: '',
         email: '',
         password: '',
-        profPicture: '',
+        profPic: '',
         profPicName:''
     })
   const [pictureFile, SetPictureFile ] = useState()
@@ -45,17 +45,19 @@ const Register = () => {
   //Set Picture File // 
   const handlePicture = (e) => {
     SetPictureFile(e.target.files[0])
-    setPictureName(e.target.files[0].name)
     console.log(pictureName);
   }
 
 //Uploading Photo to firestore //
 useEffect(()=> {
   const uploadImage = () => {
-      const storedName = pictureName + new Date().getTime()
+      
+    
+      const storedName = pictureFile.name + new Date().getTime() 
+      console.log(storedName)
       const storageRef = ref(storage, `profile-photo/${storedName}`)
       const uploadTask = uploadBytesResumable(storageRef, pictureFile)
-      
+       
       uploadTask.on('state_changed',
           (snapshot) => {
               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -79,7 +81,7 @@ useEffect(()=> {
               // Handle successful uploads on complete //
               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               setUserData((prev)=> ({...prev, 
-                  profPicture: downloadURL,
+                  profPic: downloadURL,
                   profPicName: storedName,
               }))})
           },
@@ -101,8 +103,8 @@ useEffect(()=> {
               country: userData.country,
               email: res.user.email,
               timestamp: serverTimestamp(),
-              profPicture: '',
-              profPicName:''
+              profPic: userData.profPic,
+              profPicName:userData.profPicName
           })
           console.log(res.user.uid);
           setMessage("success")

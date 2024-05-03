@@ -20,6 +20,7 @@ import StatGraph from '../components/StatGraph'
 
 const AdminPage = () => {
 
+  const user = JSON.parse(localStorage.getItem("user"))
 
   return (
     <div className="admin-page">
