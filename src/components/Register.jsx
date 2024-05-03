@@ -17,8 +17,12 @@ const Register = () => {
         country: '',
         email: '',
         password: '',
+        profPicture: '',
+        profPicName:''
     })
   const [pictureFile, SetPictureFile ] = useState()
+  const [pictureName, setPictureName ] = useState()
+  const [percent, setPercent] = useState()
   const [country, setCountry] = useState()
   const [message, setMessage ] = useState("")
 
@@ -41,49 +45,49 @@ const Register = () => {
   //Set Picture File // 
   const handlePicture = (e) => {
     SetPictureFile(e.target.files[0])
-    set
+    setPictureName(e.target.files[0].name)
+    console.log(pictureName);
   }
 
 //Uploading Photo to firestore //
-// useEffect(()=> {
-//   const uploadImage = () => {
-//       const storageRef = ref(storage, `profile-photo/`)
-//       const metadata = {customMetadata:{'user': pictureData.user}}
-//       const uploadTask = uploadBytesResumable(storageRef, pictureFile, metadata)
+useEffect(()=> {
+  const uploadImage = () => {
+      const storedName = pictureName + new Date().getTime()
+      const storageRef = ref(storage, `profile-photo/${storedName}`)
+      const uploadTask = uploadBytesResumable(storageRef, pictureFile)
       
-//       uploadTask.on('state_changed',
-//           (snapshot) => {
-//               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-//               console.log('Upload is ' + progress + '% done');
-//               setPercent(progress);
-//               switch (snapshot.state) {
-//               case 'paused':
-//                   console.log('Upload is paused');
-//                   break;
-//               case 'running':
-//                   console.log('Upload is running');
-//                   break;
-//               default:
-//                   break;
-//               }
-//           }, 
-//           (error) => {
-//               console.log(error)
-//           }, 
-//           () => {
-//               // Handle successful uploads on complete //
-//               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-//               setPictureData((prev)=> ({...prev, 
-//                   imageLink:downloadURL, 
-//                   storedName:storedName,
-//                   user:user.uid
-//               }))})
-//           },
-//           console.log(pictureData, percent)
-//           )
-//       }
-//   pictureFile && uploadImage()
-//   }, [pictureFile])
+      uploadTask.on('state_changed',
+          (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('Upload is ' + progress + '% done');
+              setPercent(progress);
+              switch (snapshot.state) {
+              case 'paused':
+                  console.log('Upload is paused');
+                  break;
+              case 'running':
+                  console.log('Upload is running');
+                  break;
+              default:
+                  break;
+              }
+          }, 
+          (error) => {
+              console.log(error)
+          }, 
+          () => {
+              // Handle successful uploads on complete //
+              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              setUserData((prev)=> ({...prev, 
+                  profPicture: downloadURL,
+                  profPicName: storedName,
+              }))})
+          },
+          console.log(userData, percent)
+          )
+      }
+  pictureFile && uploadImage()
+  }, [pictureFile])
 
 
   const handleSubmit = async (e) =>  {
@@ -96,7 +100,9 @@ const Register = () => {
               lastName: userData.surname,
               country: userData.country,
               email: res.user.email,
-              timestamp: serverTimestamp()
+              timestamp: serverTimestamp(),
+              profPicture: '',
+              profPicName:''
           })
           console.log(res.user.uid);
           setMessage("success")
