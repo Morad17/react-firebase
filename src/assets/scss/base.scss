@@ -307,8 +307,9 @@ body{
     .profile-photo{
         text-align: center;
         img{
-            width: 35%;
+            width: 150px;
             background-color: white;
+            border-radius: 50%;
         }
     }
     ul{
