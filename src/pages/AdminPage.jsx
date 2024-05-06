@@ -34,7 +34,9 @@ const AdminPage = () => {
               <img src={views} alt="" />
             </div>
             <p className="card-number">100</p>
-            <Link><p className="card-link">All Photos</p></Link>
+            <span>
+              <Link><p className="card-link">All Photos</p></Link>
+            </span>
           </div>
           <div className="likes-card card-vi">
             <div className="top-line">

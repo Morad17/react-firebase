@@ -12,15 +12,17 @@ import { collection, doc, getDoc, query, where } from 'firebase/firestore'
 const AdminSidebar = () => {
 
 const currentUser = JSON.parse(localStorage.getItem("user"))
-const [imageUrl, setImageUrl] = useState("")
+const [userData, setUserData] = useState({})
 
 useEffect(()=> {
     const fetchPhoto = async () => {
         const docRef = doc(db, "users",currentUser.uid)
         const userDoc = await getDoc(docRef)
         const docData = userDoc.data()
-        setImageUrl(docData.profPic)
-        console.log(imageUrl) 
+        setUserData({
+            "firstName": docData.firstName, "lastName": docData.lastName, "urlLink":docData.profPic
+        })
+        console.log(userData) 
     }
     fetchPhoto()
 }, [])
@@ -28,7 +30,8 @@ useEffect(()=> {
   return (
     <nav className="admin-sidebar">
         <div className="profile-photo">
-            <img src={imageUrl? imageUrl:StockIcon} alt="Profile Picture" />
+            <img src={userData.urlLink? userData.urlLink:StockIcon} alt="Profile Picture" />
+            <h3 className="user-name">{userData.firstName} {userData.lastName}</h3>
         </div>
         <ul>
             <li className="sidebar-links">
