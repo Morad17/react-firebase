@@ -107,7 +107,6 @@ body{
     .icon-group{
         display: flex;
         flex-direction: column;
-        z-index: 111;
         .icons{
             color: white;
             margin: 10px;
@@ -219,7 +218,7 @@ body{
     column-gap: 1.5vh;
     grid-auto-rows: auto;
     grid-auto-flow: dense;
-    margin: 5vh 10vw;
+    padding: 5vh 10vw;
     .photo img{
         width: 100%;
         height: auto;
@@ -424,27 +423,55 @@ body{
 //Photo Page//
 
 .photo-page{
-    position: relative;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    padding: 0;
+    left: 0;
+    top: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
     .wrapper{
-        width: 100vw;
-        height: 100vh;
-        background-color: rgb(0 0 0 / 50%);
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0 0 0 / 90%);
         z-index: 1;
         position: absolute;
     }
     .photo-details{
         position: relative;
         z-index: 11;
-        width: 60vw;
-        height: 100vh;
+        width: 70vw;
+        height: 90vh;
         margin: auto;
-        background-color: white;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
         h3{
+            font-size: 30px;
             margin: 0;
             padding: 0;
         }
     }
     img{
-        max-width: 400px;
+         
+        max-width: 30vw;
     }
+    .top-row{
+        display: flex;
+        justify-content: space-between;
+        padding: 1vh 2vw;
+    }
+    .user-details{
+        display: flex;
+        .user-picture{
+            object-fit: contain;
+            background-color: white;
+            border-radius: 50%;
+        }
+    }
+    
 }

@@ -2,11 +2,14 @@ import React,{useEffect, useState} from 'react'
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../Firebase'
 import { Link } from 'react-router-dom'
+import PhotoPage from '../pages/PhotoPage'
 
 
 const PhotoGallery = () => {
 
     const [photos, setPhotos] = useState([])
+    const [photoId, setPhotoId] = useState('')
+    const [ photoClicked, setPhotoClicked ] = useState(false)
     //Get Photo Data //
     useEffect(()=> {
       const fetchData = async () => {
@@ -21,23 +24,31 @@ const PhotoGallery = () => {
           console.log(err);
           }}
           fetchData()
-          console.log(photos)
     }, [])
 
-
+    const photoPage = (id) => {
+      setPhotoClicked(true)
+      setPhotoId(id)
+     }
   return (
+
+    
     <div className="photo-gallery">
         { 
           photos?.map((photo, key) => {
             return (
               <div className="photo" key={key} >
-                <Link to={`/photo-page/${photo.id}`}>
+                <Link onClick={() => photoPage(photo.id)}>
                   <img src={photo.imageLink} alt="" />
                 </Link>
               </div>
             ) 
             }) 
         }
+        {
+          photoClicked&&<PhotoPage photoId={photoId}/>
+        }
+        
     </div>
   )
 }

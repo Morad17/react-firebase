@@ -83,7 +83,7 @@ const AddPhoto = () => {
                 location: '',
                 dateTaken: null,
                 imageLink: '',
-                user: ''
+                user: '',
             })
             setPictureFile(null)
             e.target.reset()            
