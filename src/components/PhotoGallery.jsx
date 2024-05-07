@@ -21,7 +21,6 @@ const PhotoGallery = () => {
               list.push({id: doc.id, ...doc.data()})
           })
           setPhotos(list)
-          console.log(photos);
           } catch (err){
           console.log(err);
           }}
@@ -30,6 +29,7 @@ const PhotoGallery = () => {
 
     const photoPage = (id, user) => {
       setPhotoClicked(true)
+      setPhotoId(id)
       // updateViews(id, user)
      }
     // const updateViews = async (id, user) => {
