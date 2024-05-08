@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { collection, getDocs, doc, deleteDoc, updateDoc, increment } from 'firebase/firestore'
+import { collection, getDocs, doc, deleteDoc, updateDoc, increment, getDoc } from 'firebase/firestore'
 import { db } from '../Firebase'
 import { Link } from 'react-router-dom'
 import PhotoPage from '../pages/PhotoPage'
@@ -30,19 +30,19 @@ const PhotoGallery = () => {
     const photoPage = (id, user) => {
       setPhotoClicked(true)
       setPhotoId(id)
-      // updateViews(id, user)
+      updateViews(id, user)
      }
-    // const updateViews = async (id, user) => {
-    //   const picDoc = db.collection("metrics").doc(`views`)
-    //   picDoc.get().then((doc) => {
-    //     if(doc.exists) return console.log("it exists");
-    //   })
+    const updateViews = async (id, user) => {
+      const docSnap = await getDoc(doc(db, `metrics/views/${id}`, "test"))
+        if(docSnap.exists()) return console.log("it exists");
+        else return console.log("doesnt exist");
       
-    //   const subRef = doc(db, "metrics", id)
-    //   await updateDoc(subRef, {
-    //     views: increment(1)
-    //   }) 
-    //   console.log("done")};
+      // const subRef = doc(db, "metrics", id)
+      // await updateDoc(subRef, {
+      //   views: increment(1)
+      // }) 
+      // console.log("done") 
+    }
   return (
 
     
