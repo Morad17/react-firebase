@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 import { db } from '../Firebase'
 
+import stockPhoto from '../assets/images/stock-profile-icon.png'
+
 const PhotoPage = ({photoId}) => {
 
   const locate = useLocation()
@@ -50,14 +52,24 @@ const PhotoPage = ({photoId}) => {
       <div className="wrapper"></div>
       <div className="photo-details">
         <div className="top-row">
-          <div className="user-details">
-            <img className="user-picture" src={userData.profPic} alt="" />
-            <span>
-              <p>{userData.firstName} {userData.lastName}</p>
-              <button>Follow</button>
-            </span>
-            
-          </div>
+          {
+            userData ? 
+            <div className="user-details">
+              <img className="user-picture" src={userData.profPic} alt="" />
+              <span>
+                <p>{userData.firstName} {userData.lastName}</p>
+                <button>Follow</button>
+              </span>
+            </div>
+          : 
+            <div className="user-details">
+              <img className="user-picture" src={stockPhoto} alt="" />
+              <span>
+                <p>Anonymous</p>
+              </span>
+            </div>
+              }
+          
           <div className="photo-links">
           <button>Like</button>
           <button>Subscribe</button>
