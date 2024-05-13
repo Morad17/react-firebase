@@ -11,41 +11,35 @@ const PhotoPage = ({photoId}) => {
 
   const [photoData, setPhotoData] = useState([])
   const [userData, setUserData] = useState([])
-  const [userId, setUserId] = useState(null)
 
+  // Fetching Photo, Details & Created By in one UseEffect //
   useEffect(()=> {
     const fetchPhotoData = async () => {
       try{
-        const qPhoto = await getDoc(doc(db, "photo", photoId))
-        setPhotoData(qPhoto.data())
-        setUserId(photoData.user)
+        const res = await getDoc(doc(db, "photo", photoId))
+        return res.data()
+        
       } catch (err) {
         console.log(err);
       }
     }
-    fetchPhotoData()
-  },[])
-  useEffect(()=> {
-    const fetchUserData = async () => {
-      if (userId) {
-        try{
-        const qUser = await getDoc(doc(db, "users", userId))
-        setUserData(qUser.data())
-      } catch(err) {
-        console.log(err);
-      }
-      }
-      
+    const fetchUserData = async (userId) => {
+      try{
+      const res = await getDoc(doc(db, `users/${userId}`))
+      return res.data()
+    } catch(err) {
+      console.log(err);
     }
-    fetchUserData()
-  }, [userId])
-           {/* dateTaken
-            imageLink
-            location
-            name
-            storedName
-            title
-            user*/}
+    }
+    const fetchBoth = async () => {
+      const tempPhotoData = await fetchPhotoData()
+      const tempUserData = await fetchUserData(tempPhotoData.user)
+      setPhotoData(tempPhotoData)
+      setUserData(tempUserData)
+      console.log(tempUserData);
+    } 
+    fetchBoth()
+  },[])
 
   return (
     <div className="photo-page">
