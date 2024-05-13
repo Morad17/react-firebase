@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { collection, getDocs, doc, deleteDoc, updateDoc, increment, getDoc } from 'firebase/firestore'
+import { collection, getDocs, doc, deleteDoc, updateDoc, increment, getDoc, setDoc} from 'firebase/firestore'
 import { db } from '../Firebase'
 import { Link } from 'react-router-dom'
 import PhotoPage from '../pages/PhotoPage'
@@ -29,21 +29,32 @@ const PhotoGallery = () => {
 
     const photoPage = (id, user) => {
       setPhotoClicked(true)
-      const pageId = document.getElementById("photo-page")
-      pageId.style.display = "flex"
       setPhotoId(id)
       updateViews(id, user)
+      //reset photo page after closed //
+      const pageId = document.getElementById("photo-page")
+      if (pageId) pageId.style.display = "flex"
      }
     const updateViews = async (id, user) => {
-      const docSnap = await getDoc(doc(db, `metrics/views/${id}`, "test"))
-        if(docSnap.exists()) return console.log("it exists");
-        else return console.log("doesnt exist");
-      
-      // const subRef = doc(db, "metrics", id)
-      // await updateDoc(subRef, {
-      //   views: increment(1)
-      // }) 
-      // console.log("done") 
+      const qSnap = await getDoc(doc(db, `views`, id))
+      //if viewed increment view by 1 //
+      if (qSnap.exists()){
+        try {
+          await updateDoc(doc(db, "views", id), {
+            views: increment(1)
+          })
+          console.log("updated");
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        //Add new doc with one view //
+       try{
+        await setDoc(doc(db,`views`, id), {views: 1})
+       } catch(err) {
+        console.log(err);
+       }
+      }
     }
   return (
 

@@ -1,4 +1,4 @@
-import { collection, doc, getDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { db } from '../Firebase'
@@ -13,6 +13,7 @@ const PhotoPage = ({photoId}) => {
   const [photoData, setPhotoData] = useState([])
   const [userData, setUserData] = useState([])
 
+  const user = JSON.parse(localStorage.getItem("user"))
   // Fetching Photo, Details & Created By in one UseEffect //
   useEffect(()=> {
     const fetchPhotoData = async () => {
@@ -40,6 +41,18 @@ const PhotoPage = ({photoId}) => {
     } 
     fetchBoth()
   },[])
+  const followHandler = async () => {
+    const authorId = userData.id
+    const userId = user.uid
+    
+    // try{
+    //   await setDoc(doc(db, `followers`,userId), {"follow": authorId})
+    // } catch(err){
+    //   console.log(err);
+    // }
+  }
+
+
   const returnHome = () => {
     const pageId = document.getElementById("photo-page")
     return pageId.style.display = "none"
@@ -62,7 +75,6 @@ const PhotoPage = ({photoId}) => {
                   <img className="user-picture" src={userData.profPic} alt="" />
                   <span>
                     <p>{userData.firstName} {userData.lastName}</p>
-                    <button>Follow</button>
                   </span>
                 </div>
               : 
@@ -76,7 +88,7 @@ const PhotoPage = ({photoId}) => {
             
             <div className="photo-links">
             <button>Like</button>
-            <button>Subscribe</button>
+            <button onClick={() => followHandler()}>Follow</button>
             <button>Download</button>
             </div> 
           </div>
