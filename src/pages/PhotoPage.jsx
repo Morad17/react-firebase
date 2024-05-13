@@ -1,14 +1,15 @@
 import { collection, doc, getDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { db } from '../Firebase'
 
 import stockPhoto from '../assets/images/stock-profile-icon.png'
+import cross from '../assets/icons/cross.png'
+import { Link } from 'react-router-dom'
 
 const PhotoPage = ({photoId}) => {
-
-  const locate = useLocation()
-
+  const navigate = useNavigate()
+  const location = useLocation()
   const [photoData, setPhotoData] = useState([])
   const [userData, setUserData] = useState([])
 
@@ -36,40 +37,51 @@ const PhotoPage = ({photoId}) => {
       const tempUserData = await fetchUserData(tempPhotoData.user)
       setPhotoData(tempPhotoData)
       setUserData(tempUserData)
-      console.log(tempUserData);
     } 
     fetchBoth()
   },[])
+  const returnHome = () => {
+    const pageId = document.getElementById("photo-page")
+    return pageId.style.display = "none"
+  }
 
   return (
-    <div className="photo-page">
+    <div className="photo-page" id="photo-page">
       <div className="wrapper"></div>
       <div className="photo-details">
         <div className="top-row">
-          {
-            userData ? 
-            <div className="user-details">
-              <img className="user-picture" src={userData.profPic} alt="" />
-              <span>
-                <p>{userData.firstName} {userData.lastName}</p>
-                <button>Follow</button>
-              </span>
-            </div>
-          : 
-            <div className="user-details">
-              <img className="user-picture" src={stockPhoto} alt="" />
-              <span>
-                <p>Anonymous</p>
-              </span>
-            </div>
-              }
+          <div className="exit-section">
+            <Link className="exit-link" onClick={()=> returnHome()}>
+              <img src={cross} alt="" className="cross" />
+            </Link>
+          </div>
           
-          <div className="photo-links">
-          <button>Like</button>
-          <button>Subscribe</button>
-          <button>Download</button>
-          </div> 
-        </div>
+          <div className="content-section">
+            { userData ? 
+                <div className="user-details">
+                  <img className="user-picture" src={userData.profPic} alt="" />
+                  <span>
+                    <p>{userData.firstName} {userData.lastName}</p>
+                    <button>Follow</button>
+                  </span>
+                </div>
+              : 
+                <div className="user-details">
+                  <img className="user-picture" src={stockPhoto} alt="" />
+                  <span>
+                    <p>Anonymous</p>
+                  </span>
+                </div>
+            }
+            
+            <div className="photo-links">
+            <button>Like</button>
+            <button>Subscribe</button>
+            <button>Download</button>
+            </div> 
+          </div>
+          </div>
+          
         <div className="middle-row">
           <img src={photoData.imageLink} alt="" />
         </div>

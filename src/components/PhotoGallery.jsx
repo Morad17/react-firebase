@@ -29,6 +29,8 @@ const PhotoGallery = () => {
 
     const photoPage = (id, user) => {
       setPhotoClicked(true)
+      const pageId = document.getElementById("photo-page")
+      pageId.style.display = "flex"
       setPhotoId(id)
       updateViews(id, user)
      }
