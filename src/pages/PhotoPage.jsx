@@ -42,14 +42,15 @@ const PhotoPage = ({photoId}) => {
     fetchBoth()
   },[])
   const followHandler = async () => {
-    const authorId = userData.id
+    
+    const authorId = userData.uid
     const userId = user.uid
     
-    // try{
-    //   await setDoc(doc(db, `followers`,userId), {"follow": authorId})
-    // } catch(err){
-    //   console.log(err);
-    // }
+    try{
+      await setDoc(doc(db, `followers`,userId), {[authorId]: true})
+    } catch(err){
+      console.log(err);
+    }
   }
 
 
