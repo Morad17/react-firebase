@@ -1,11 +1,12 @@
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { db } from '../Firebase'
 
 import stockPhoto from '../assets/images/stock-profile-icon.png'
 import cross from '../assets/icons/cross.png'
 import { Link } from 'react-router-dom'
+import { PhotoContext } from '../context/PhotoContext'
 
 const PhotoPage = ({photoId}) => {
   const navigate = useNavigate()
@@ -139,9 +140,12 @@ const PhotoPage = ({photoId}) => {
     const downloadWarning = () => {
       setDloadWarning(true)
     }
+    // Return to Home Screen //
   const returnHome = () => {
-    const pageId = document.getElementById("photo-page")
-    return pageId.style.display = "none"
+    // const pageId = document.getElementById("photo-page")
+    // return pageId.style.display = "none"
+    // navigate("/home")
+    setPhotoClicked(false)
   }
 
   return (
