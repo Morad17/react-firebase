@@ -12,6 +12,7 @@ const PhotoPage = ({photoId}) => {
   const location = useLocation()
   const [photoData, setPhotoData] = useState([])
   const [userData, setUserData] = useState([])
+  const [following, setFollowing] = useState()
 
   const user = JSON.parse(localStorage.getItem("user"))
   // Fetching Photo, Details & Created By in one UseEffect //
@@ -41,6 +42,20 @@ const PhotoPage = ({photoId}) => {
     } 
     fetchBoth()
   },[])
+  useEffect(()=> {
+    const fetchFollowData = async () => {
+      const authorId = userData.uid
+      const userId = user.uid
+      try {
+        const res = await getDoc(doc(db, `followers/${userId}`))
+        const follow = res.data([authorId])[authorId]
+        setFollowing(follow)
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchFollowData()
+  },[user])
   const followHandler = async () => {
     
     const authorId = userData.uid
@@ -89,7 +104,11 @@ const PhotoPage = ({photoId}) => {
             
             <div className="photo-links">
             <button>Like</button>
-            <button onClick={() => followHandler()}>Follow</button>
+            {
+              following ? 
+              <button className="follow-button"onClick={() => followHandler()}>Following</button>
+              : <button onClick={() => followHandler()}>Follow</button>
+          }
             <button>Download</button>
             </div> 
           </div>
