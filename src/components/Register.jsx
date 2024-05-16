@@ -33,7 +33,6 @@ const Register = () => {
   //Set Users Data //
   const setData = (e) => {
       setUserData(prev => ({...prev, [e.target.name]:e.target.value }))
-      console.log(userData);
   }
   //Set Country //
   const countryHandler = val => {

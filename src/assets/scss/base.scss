@@ -64,7 +64,6 @@ body{
     .login-group{
         margin: auto 0;
         align-content: center;
-        z-index: 111;
         color: white;
         
         h2{
@@ -483,8 +482,7 @@ body{
             width: 100px;
         }
     }
-    .follow-button{
+    .follow-button, .like-button{
         background-color: $main-pink;
     }
-    
 }

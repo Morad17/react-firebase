@@ -43,7 +43,6 @@ const PhotoGallery = () => {
           await updateDoc(doc(db, "views", id), {
             views: increment(1)
           })
-          console.log("updated");
         } catch (err) {
           console.log(err);
         }
