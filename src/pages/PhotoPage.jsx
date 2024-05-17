@@ -6,7 +6,6 @@ import { db } from '../Firebase'
 import stockPhoto from '../assets/images/stock-profile-icon.png'
 import cross from '../assets/icons/cross.png'
 import { Link } from 'react-router-dom'
-import { PhotoContext } from '../context/PhotoContext'
 
 const PhotoPage = ({photoId}) => {
   const navigate = useNavigate()
@@ -145,7 +144,6 @@ const PhotoPage = ({photoId}) => {
     // const pageId = document.getElementById("photo-page")
     // return pageId.style.display = "none"
     // navigate("/home")
-    setPhotoClicked(false)
   }
 
   return (
