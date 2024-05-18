@@ -1,13 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../Firebase';
 
 const Navbar = () => {
-  const currentUser = JSON.parse(localStorage.getItem("user"))
+  const [usersName, setUsersName] = useState([])
   const {dispatch} = useContext(AuthContext)
   const navigate = useNavigate()
+  const currentUser = JSON.parse(localStorage.getItem("user"))
+  useEffect(()=> {
+    const userId = JSON.parse(localStorage.getItem("user")).uid
+    const fetchUser = async () => {
+      const user = await getDoc(doc(db,`users/${userId}`))
+      setUsersName(user.data())
+    }
+    fetchUser()
+    
+  },[])
 
   const logout = () => {
       console.log(currentUser);
@@ -20,13 +32,13 @@ const Navbar = () => {
   return (
     <nav className="main-nav">
       {
-        currentUser ? 
+        usersName ? 
         <ul className="registered-links">
           <li>
             <Link to="/"className="link" >Home</Link>
           </li>
           <li>
-            <h2 className="nav-banner">Welcome Back {currentUser?.email}</h2>
+            <h2 className="nav-banner">Welcome Back {usersName?.firstName}</h2>
           </li> 
           <li className="link" onClick={logout}>
             Logout
