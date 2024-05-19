@@ -10,7 +10,7 @@ const PhotoGallery = () => {
 
     const [photos, setPhotos] = useState([])
     const [photoId, setPhotoId] = useState('')
-    const [ photoClicked, setPhotoClicked ] = useState(null)
+    const [photoClicked, setPhotoClicked ] = useState(null)
     const [photoData, setPhotoData] = useState([])
     const [userData, setUserData] = useState([])
     const [following, setFollowing] = useState()
@@ -59,6 +59,8 @@ const PhotoGallery = () => {
         console.log(err);
        }
       }
+
+      const qSnap2 = await getDoc(doc(db, `totalUserViews`, user.uid))
     }
     //// Photo Page /////
 
@@ -187,7 +189,7 @@ const PhotoGallery = () => {
       photos?.map((photo, key) => {
         return (
           <div className="photo" key={key} >
-            <Link onClick={() => photoPage(photo.id)}>
+            <Link onClick={() => photoPage(photo.id, )}>
               <img src={photo.imageLink} alt="" />
             </Link>
           </div>

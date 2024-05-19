@@ -38,7 +38,7 @@ const Navbar = () => {
             <Link to="/"className="link" >Home</Link>
           </li>
           <li>
-            <h2 className="nav-banner">Welcome Back {usersName?.firstName}</h2>
+            <h2 className="nav-banner">Welcome Back {usersName?.firstName + ' ' + usersName?.lastName}</h2>
           </li> 
           <li className="link" onClick={logout}>
             Logout
