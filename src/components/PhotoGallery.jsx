@@ -41,6 +41,7 @@ const PhotoGallery = () => {
      }
     // Deals With Viewing Photo When Clicked//
     const updateViews = async (id, user) => {
+      console.log(user);
       const qSnap = await getDoc(doc(db, `views`, id))
       //if viewed increment view by 1 //
       if (qSnap.exists()){
@@ -60,7 +61,22 @@ const PhotoGallery = () => {
        }
       }
 
-      const qSnap2 = await getDoc(doc(db, `totalUserViews`, user.uid))
+      const qSnap2 = await getDoc(doc(db, `totalUserViews`, user))
+      if (qSnap2.exists()){
+        try {
+          await updateDoc(doc(db, `totalUserViews`, user), {
+            views: increment(1)
+          })
+        } catch (err) {
+            console.log(err)
+        }
+      } else {
+        try {
+          await setDoc(doc(db, `totalUserViews`, user), {views:1})
+        } catch (err) {
+          console.log(err);
+        }
+      }
     }
     //// Photo Page /////
 
@@ -189,7 +205,7 @@ const PhotoGallery = () => {
       photos?.map((photo, key) => {
         return (
           <div className="photo" key={key} >
-            <Link onClick={() => photoPage(photo.id, )}>
+            <Link onClick={() => photoPage(photo.id, photo.user)}>
               <img src={photo.imageLink} alt="" />
             </Link>
           </div>
