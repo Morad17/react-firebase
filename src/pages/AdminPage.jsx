@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AddPhoto from '../components/AddPhoto'
 import AdminSidebar from '../components/AdminSidebar'
 import { Link } from 'react-router-dom'
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
+import { collection, getDocs, doc, deleteDoc, getDoc } from 'firebase/firestore'
 import { db } from '../Firebase'
 //image imports //
 import topPhoto from '../assets/images/stock-top-picture.JPG'
@@ -21,6 +21,21 @@ import StatGraph from '../components/StatGraph'
 const AdminPage = () => {
 
   const user = JSON.parse(localStorage.getItem("user"))
+  const [metrics, setMetrics ] = useState([])
+
+  useEffect(()=> {
+    const getTotalViews = async() => {
+      try {
+        const res = await getDoc(doc(db, "totalUserViews", user.uid)).data
+        const data = res.data()
+        setMetrics({"totalViews":data})
+        console.log(metrics);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getTotalViews()
+  }, [])
 
   return (
     <div className="admin-page">
@@ -49,7 +64,7 @@ const AdminPage = () => {
           </div>
           <div className="subs-card card-vi">
             <div className="top-line">
-              <h3 className="card-title">Total Subs</h3>
+              <h3 className="card-title">Total Followers</h3>
             <img src={subs} alt="" />
             </div>
             

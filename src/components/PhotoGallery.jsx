@@ -33,6 +33,7 @@ const PhotoGallery = () => {
           }}
           fetchData()
     }, [])
+    // Brings up Photo Page Details When Clicked //
     const photoPage = (id, user) => {
       
       setPhotoId(id)
@@ -41,7 +42,6 @@ const PhotoGallery = () => {
      }
     // Deals With Viewing Photo When Clicked//
     const updateViews = async (id, user) => {
-      console.log(user);
       const qSnap = await getDoc(doc(db, `views`, id))
       //if viewed increment view by 1 //
       if (qSnap.exists()){
@@ -60,7 +60,7 @@ const PhotoGallery = () => {
         console.log(err);
        }
       }
-
+      //aggregates total views from picture user views //
       const qSnap2 = await getDoc(doc(db, `totalUserViews`, user))
       if (qSnap2.exists()){
         try {
@@ -73,6 +73,46 @@ const PhotoGallery = () => {
       } else {
         try {
           await setDoc(doc(db, `totalUserViews`, user), {views:1})
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+     // Deals With Photo Download Metrics//
+     const downloadListener = async () => {
+      const id = photoId
+      const user = photoData.user
+      const qSnap = await getDoc(doc(db, `downloads`, id))
+      //if viewed increment view by 1 //
+      if (qSnap.exists()){
+        try {
+          await updateDoc(doc(db, "downloads", id), {
+            downloads: increment(1)
+          })
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        //Add new doc with one download //
+       try{
+        await setDoc(doc(db,`downloads`, id), {downloads: 1})
+       } catch(err) {
+        console.log(err);
+       }
+      }
+      //aggregates total downloads of each picture //
+      const qSnap2 = await getDoc(doc(db, `totalDownloads`, user))
+      if (qSnap2.exists()){
+        try {
+          await updateDoc(doc(db, `totalDownloads`, user), {
+            downloads: increment(1)
+          })
+        } catch (err) {
+            console.log(err)
+        }
+      } else {
+        try {
+          await setDoc(doc(db, `totalDownloads`, user), {downloads:1})
         } catch (err) {
           console.log(err);
         }
@@ -251,7 +291,8 @@ const PhotoGallery = () => {
                 : <button onClick={() => followHandler()}>Follow</button>
               }
               {
-                user ? <a href={photoData.imageLink} download={photoData.uid} target="_blank"><button >Download</button></a>
+                user ? <a href={photoData.imageLink} download={photoData.uid} target="_blank" 
+                onClick={()=> downloadListener(photoData.uid, photoData.user)}><button >Download</button></a>
                 : <div className="">
                     <button onClick={() =>downloadWarning()}>Download</button>
                     { dloadWarning && <p className="" id="download-warning">You Must Be Logged In To Download Pictures</p>}
