@@ -23,12 +23,13 @@ const AdminPage = () => {
   const user = JSON.parse(localStorage.getItem("user"))
   const [metrics, setMetrics ] = useState([])
 
+  /// Get Total Views On All User Photos //
   useEffect(()=> {
     const getTotalViews = async() => {
       try {
-        const res = await getDoc(doc(db, "totalUserViews", user.uid)).data
+        const res = await getDoc(doc(db, "totalUserViews", user.uid))
         const data = res.data()
-        setMetrics({"totalViews":data})
+        setMetrics({"totalViews":data.views})
         console.log(metrics);
       } catch (err) {
         console.log(err);
@@ -36,6 +37,19 @@ const AdminPage = () => {
     }
     getTotalViews()
   }, [])
+
+  /// Get Total Views On All User Photos ///
+  // useEffect(()=> {
+  //   const getTotalLikes = async () => {
+  //     try {
+        
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  //   getTotalLikes()
+  // },[])
+
 
   return (
     <div className="admin-page">
@@ -48,7 +62,7 @@ const AdminPage = () => {
               <div className="shape"></div>
               <img src={views} alt="" />
             </div>
-            <p className="card-number">100</p>
+            <p className="card-number">{metrics.totalViews}</p>
             <span>
               <Link><p className="card-link">All Photos</p></Link>
             </span>

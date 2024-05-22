@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Banner from '../components/Banner'
+import React from 'react'
 
+import Banner from '../components/Banner'
 import PhotoGallery from '../components/PhotoGallery'
 
 const Home = () => {
@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="home">
       <Banner />
-        <PhotoGallery />
+      <PhotoGallery />
     </div>
   )
 }

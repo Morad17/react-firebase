@@ -60,9 +60,29 @@ const PhotoGallery = () => {
         console.log(err);
        }
       }
-      //aggregates total views from picture user views //
-      const qSnap2 = await getDoc(doc(db, `totalUserViews`, user))
+      // Records Day of view //
+      const qSnap2 = await getDoc(doc(db, `views`, id))
+      const date = new Date()
+      const formatDate = date.getMonth() + "-" + date.getFullYear()
       if (qSnap2.exists()){
+        try {
+          await updateDoc(doc(db, "views", id), {
+            [formatDate]: increment(1)
+          })
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        //Add new doc with date //
+       try{
+        await setDoc(doc(db,`views`, id), {[formatDate]: 1})
+       } catch(err) {
+        console.log(err);
+       }
+      }
+      //aggregates total views from picture user views //
+      const qSnap3 = await getDoc(doc(db, `totalUserViews`, user))
+      if (qSnap3.exists()){
         try {
           await updateDoc(doc(db, `totalUserViews`, user), {
             views: increment(1)
@@ -83,7 +103,7 @@ const PhotoGallery = () => {
       const id = photoId
       const user = photoData.user
       const qSnap = await getDoc(doc(db, `downloads`, id))
-      //if viewed increment view by 1 //
+      //if Downloaded increment view by 1 //
       if (qSnap.exists()){
         try {
           await updateDoc(doc(db, "downloads", id), {
@@ -100,9 +120,29 @@ const PhotoGallery = () => {
         console.log(err);
        }
       }
-      //aggregates total downloads of each picture //
-      const qSnap2 = await getDoc(doc(db, `totalDownloads`, user))
+      //Update downloads over time //
+      const qSnap2 = await getDoc(doc(db, `downloads`, id))
+      const date = new Date()
+      const formatDate = date.getMonth() + "-" + date.getFullYear()
       if (qSnap2.exists()){
+        try {
+          await updateDoc(doc(db, "downloads", id), {
+            [formatDate]: increment(1)
+          })
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        //Add new doc with one download //
+       try{
+        await setDoc(doc(db,`downloads`, id), {[formatDate]: 1})
+       } catch(err) {
+        console.log(err);
+       }
+      }
+      //aggregates total downloads of each picture //
+      const qSnap3 = await getDoc(doc(db, `totalDownloads`, user))
+      if (qSnap3.exists()){
         try {
           await updateDoc(doc(db, `totalDownloads`, user), {
             downloads: increment(1)
@@ -151,7 +191,7 @@ const PhotoGallery = () => {
         try {
           const res = await getDoc(doc(db, `followers/${userId}`))
           const follow = res.data([authorId])[authorId]
-          setFollowing(follow)
+          setFollowing(follow.following)
         } catch (err) {
           console.log(err);
         }
@@ -192,16 +232,25 @@ const PhotoGallery = () => {
     const followHandler = async () => {
       const authorId = userData.uid
       const userId = user.uid
+      const date = new Date()
+      const formatDate = date.getMonth() + "-" + date.getFullYear()
+      const followTrue = {[authorId]:{
+        following: true,
+        date:formatDate}}
+      const followFalse = {[authorId]:{
+        following: false}}
+      
       if (following){
         try{
-          await setDoc(doc(db, `followers`,userId), {[authorId]: false})
+          // await setDoc(doc(db, `followers`,userId), {[authorId]: false})
+          await setDoc(doc(db, `followers`, userId), followFalse)
           setFollowing(false)
         } catch(err){
           console.log(err);
         }
       } else {
         try{
-          await setDoc(doc(db, `followers`,userId), {[authorId]: true})
+          await setDoc(doc(db, `followers`,userId), followTrue)
           setFollowing(true)
         } catch(err){
           console.log(err);

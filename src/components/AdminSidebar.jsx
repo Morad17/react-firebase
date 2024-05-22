@@ -22,7 +22,6 @@ useEffect(()=> {
         setUserData({
             "firstName": docData.firstName, "lastName": docData.lastName, "urlLink":docData.profPic
         })
-        console.log(userData) 
     }
     fetchPhoto()
 }, [])
