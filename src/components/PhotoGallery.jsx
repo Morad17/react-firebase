@@ -12,7 +12,7 @@ const PhotoGallery = () => {
     const [photoId, setPhotoId] = useState('')
     const [photoClicked, setPhotoClicked ] = useState(null)
     const [photoData, setPhotoData] = useState([])
-    const [userData, setUserData] = useState([])
+    const [authorData, setAuthorData] = useState([])
     const [following, setFollowing] = useState()
     const [liked, setLiked ] = useState()
     const [dloadWarning, setDloadWarning] = useState(false)
@@ -33,15 +33,43 @@ const PhotoGallery = () => {
           }}
           fetchData()
     }, [])
-    // Brings up Photo Page Details When Clicked //
-    const photoPage = (id, user) => {
-      
+    //// Photo Page /////
+      const fetchPhotoData = async (id) => {
+        try{
+          const res = await getDoc(doc(db, "photo", id))
+          return res.data()
+          
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      const fetchAuthorData = async (userId) => {
+        try{
+        const res = await getDoc(doc(db, `users/${userId}`))
+        return res.data()
+      } catch(err) {
+        console.log(err);
+      }
+      }
+      const fetchBoth = async (id) => {
+        const tempPhotoData = await fetchPhotoData(id)
+        const tempAuthorData = await fetchAuthorData(tempPhotoData.author)
+        setPhotoData(tempPhotoData)
+        setAuthorData(tempAuthorData)
+        setPhotoClicked(true)
+      }
+      // Brings up Photo Page Details When Clicked //
+    const photoPage = (id, author) => {
       setPhotoId(id)
       fetchBoth(id)
-      updateViews(id, user)
+      if (user) {
+        fetchFollowData(author)
+        fetchLikedData(id)
+      }
+      updateViews(id, author)
      }
     // Deals With Viewing Photo When Clicked//
-    const updateViews = async (id, user) => {
+    const updateViews = async (id, author) => {
       const qSnap = await getDoc(doc(db, `views`, id))
       //if viewed increment view by 1 //
       if (qSnap.exists()){
@@ -81,10 +109,10 @@ const PhotoGallery = () => {
        }
       }
       //aggregates total views from picture user views //
-      const qSnap3 = await getDoc(doc(db, `totalUserViews`, user))
+      const qSnap3 = await getDoc(doc(db, `totalUserViews`, author))
       if (qSnap3.exists()){
         try {
-          await updateDoc(doc(db, `totalUserViews`, user), {
+          await updateDoc(doc(db, `totalUserViews`, author), {
             views: increment(1)
           })
         } catch (err) {
@@ -92,7 +120,7 @@ const PhotoGallery = () => {
         }
       } else {
         try {
-          await setDoc(doc(db, `totalUserViews`, user), {views:1})
+          await setDoc(doc(db, `totalUserViews`, author), {views:1})
         } catch (err) {
           console.log(err);
         }
@@ -158,61 +186,40 @@ const PhotoGallery = () => {
         }
       }
     }
-    //// Photo Page /////
-
-      const fetchPhotoData = async (id) => {
-        try{
-          const res = await getDoc(doc(db, "photo", id))
-          return res.data()
+    //Get Following Data Of Pic Author //
+      const fetchFollowData = async (author) => {
+        const authorId = author
+        const userId = user.uid
+        if (authorId){
+           try {
+            const res = await getDoc(doc(db, `followers/${authorId}`))
+            const follow = res.data()[userId].following
+            setFollowing(follow)
+          } catch (err) {
+            console.log(err);
+          }
+          }
+       
+      }
+    //Get Liked Data Of Pic Author //
+      const fetchLikedData = async (id) => {
+        const userId = user.uid
+        if(id){
+           try {
+          const res = await getDoc(doc(db, `liked/${id}`))
+          const liked = res.data()[userId].liked
+          if (res.exists()){
+            setLiked(liked)
+            console.log(liked);
+          } else {
+            setLiked(false)
+          }
           
         } catch (err) {
           console.log(err);
         }
-      }
-      const fetchUserData = async (userId) => {
-        try{
-        const res = await getDoc(doc(db, `users/${userId}`))
-        return res.data()
-      } catch(err) {
-        console.log(err);
-      }
-      }
-      const fetchBoth = async (id) => {
-        const tempPhotoData = await fetchPhotoData(id)
-        const tempUserData = await fetchUserData(tempPhotoData.user)
-        setPhotoData(tempPhotoData)
-        setUserData(tempUserData)
-        setPhotoClicked(true)
-      } 
-    //Get Following Data Of Pic Author //
-      const fetchFollowData = async () => {
-        const authorId = userData.uid
-        const userId = user.uid
-        try {
-          const res = await getDoc(doc(db, `followers/${userId}`))
-          const follow = res.data([authorId])[authorId]
-          setFollowing(follow.following)
-        } catch (err) {
-          console.log(err);
         }
-      }
-      if (user) {
-        fetchFollowData()
-      }
-    //Get Liked Data Of Pic Author //
-      const fetchLikedData = async () => {
-        const authorId = userData.uid
-        const userId = user.uid
-        try {
-          const res = await getDoc(doc(db, `liked/${userId}`))
-          const liked = res.data([authorId])[authorId]
-          setLiked(liked)
-        } catch (err) {
-          console.log(err);
-        }
-      }
-      if (user) {
-        fetchLikedData()
+       
       }
     // Download Warning Handler //
     // useEffect(()=> {
@@ -230,7 +237,7 @@ const PhotoGallery = () => {
     // }, [dloadWarning])
     // Follow or Unfollow Picture Author //
     const followHandler = async () => {
-      const authorId = userData.uid
+      const authorId = authorData.uid
       const userId = user.uid
       const date = new Date()
       const formatDate = date.getMonth() + "-" + date.getFullYear()
@@ -257,26 +264,35 @@ const PhotoGallery = () => {
         }
       }
     }
-     // Like or Unlike Picture Author //
+     // Like or Unlike Picture & set Date when Liked//
      const likeHandler = async () => {
-      const authorId = userData.uid
       const userId = user.uid
+      const authorId = photoData.user
+      const date = new Date()
+      const formatDate = date.getMonth() + "-" + date.getFullYear()
+      const likedTrue = {[userId]:{
+        liked: true,
+        date: formatDate,
+        author: authorId
+      }}
+      const likedFalse = {[userId]:{
+        liked: false
+      }}
       if (liked){
         try{
-          await setDoc(doc(db, `liked`,userId), {[authorId]: false})
+          await setDoc(doc(db, `liked`,photoId), likedFalse)
           setLiked(false)
         } catch(err){
           console.log(err);
         }
       } else {
         try{
-          await setDoc(doc(db, `liked`,userId), {[authorId]: true})
+          await setDoc(doc(db, `liked`,photoId), likedTrue)
           setLiked(true)
         } catch(err){
           console.log(err);
         }
       }
-      console.log(liked);
     }
       //Download Warining Initiator //
       const downloadWarning = () => {
@@ -294,7 +310,7 @@ const PhotoGallery = () => {
       photos?.map((photo, key) => {
         return (
           <div className="photo" key={key} >
-            <Link onClick={() => photoPage(photo.id, photo.user)}>
+            <Link onClick={() => photoPage(photo.id, photo.author)}>
               <img src={photo.imageLink} alt="" />
             </Link>
           </div>
@@ -313,11 +329,11 @@ const PhotoGallery = () => {
               </Link>
             </div>
             <div className="content-section">
-              { userData ? 
+              { authorData ? 
                   <div className="user-details">
-                    <img className="user-picture" src={userData.profPic} alt="" />
+                    <img className="user-picture" src={authorData.profPic} alt="" />
                     <span>
-                      <p>{userData.firstName} {userData.lastName}</p>
+                      <p>{authorData.firstName} {authorData.lastName}</p>
                     </span>
                   </div>
                 : 
