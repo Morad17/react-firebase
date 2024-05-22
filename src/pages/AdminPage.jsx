@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AddPhoto from '../components/AddPhoto'
 import AdminSidebar from '../components/AdminSidebar'
 import { Link } from 'react-router-dom'
-import { collection, getDocs, doc, deleteDoc, getDoc } from 'firebase/firestore'
+import { collection, getDocs, doc, deleteDoc, getDoc, where } from 'firebase/firestore'
 import { db } from '../Firebase'
 //image imports //
 import topPhoto from '../assets/images/stock-top-picture.JPG'
@@ -30,7 +30,6 @@ const AdminPage = () => {
         const res = await getDoc(doc(db, "totalUserViews", user.uid))
         const data = res.data()
         setMetrics({"totalViews":data.views})
-        console.log(metrics);
       } catch (err) {
         console.log(err);
       }
@@ -38,17 +37,44 @@ const AdminPage = () => {
     getTotalViews()
   }, [])
 
-  /// Get Total Views On All User Photos ///
-  // useEffect(()=> {
-  //   const getTotalLikes = async () => {
-  //     try {
-        
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   }
-  //   getTotalLikes()
-  // },[])
+  // / Get Total Likes On All User Photos ///
+  useEffect(()=> {
+    const getTotalLikes = async () => {
+      const list = []
+      try {
+        const qData = await getDocs(collection(db, "liked"), where("author", "==",user.uid))
+        qData.forEach((doc)=> {
+          list.push(doc.data())
+        })
+        setMetrics(prev => ({...prev,"totalLikes":list.length}))
+        console.log(metrics);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getTotalLikes()
+  },[])
+  /// Get Total Followers ///
+  useEffect(()=> {
+   const getTotalFollows = async () => {
+    const list = []
+    try {
+      const qData = await getDocs(collection(db, user.uid))
+      qData.forEach((doc)=> {
+        list.push(doc.data())
+      })
+      list.forEach((doc)=> {
+        if (doc.following === false){
+          return doc
+        }
+      })
+      console.log(list);
+    } catch (err) {
+      console.log(err);
+    }
+   }
+   getTotalFollows()
+  },[])
 
 
   return (
@@ -73,7 +99,7 @@ const AdminPage = () => {
               <img src={likes} alt="" />
             </div>
            
-            <p className="card-number">100</p>
+            <p className="card-number">{metrics.totalLikes}</p>
             <Link><p className="card-link">All Photos</p></Link>
           </div>
           <div className="subs-card card-vi">
