@@ -22,7 +22,7 @@ const AdminPage = () => {
 
   const user = JSON.parse(localStorage.getItem("user"))
   const [metrics, setMetrics ] = useState([])
-
+  const [data, setData] = useState()
   /// Get Total Views On All User Photos //
   useEffect(()=> {
     const getTotalViews = async() => {
@@ -47,7 +47,6 @@ const AdminPage = () => {
           list.push(doc.data())
         })
         setMetrics(prev => ({...prev,"totalLikes":list.length}))
-        console.log(metrics);
       } catch (err) {
         console.log(err);
       }
@@ -59,16 +58,13 @@ const AdminPage = () => {
    const getTotalFollows = async () => {
     const list = []
     try {
-      const qData = await getDocs(collection(db, user.uid))
+      const qData = await getDocs(collection(db, "followers"))
       qData.forEach((doc)=> {
-        list.push(doc.data())
+        const data = doc.data()
+        list.push(data[0].following)
       })
-      list.forEach((doc)=> {
-        if (doc.following === false){
-          return doc
-        }
-      })
-      console.log(list);
+      setData(list)
+      console.log(list[0]); 
     } catch (err) {
       console.log(err);
     }
@@ -108,7 +104,7 @@ const AdminPage = () => {
             <img src={subs} alt="" />
             </div>
             
-            <p className="card-number">100</p>
+            <p className="card-number">{}</p>
             <Link><p className="card-link">All Photos</p></Link>
           </div>
         </section>
