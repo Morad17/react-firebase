@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { collection, getDocs, doc, deleteDoc, updateDoc, increment, getDoc, setDoc} from 'firebase/firestore'
+import { collection, getDocs, doc, updateDoc, increment, getDoc, setDoc, where, exists} from 'firebase/firestore'
 import { db } from '../Firebase'
 import { Link } from 'react-router-dom'
 
@@ -207,17 +207,18 @@ const PhotoGallery = () => {
         const userId = user.uid
         if(id){
            try {
-          const res = await getDoc(doc(db, `liked/${id}`))
-          const liked = res.data()[userId].liked
-          if (res.exists()){
-            setLiked(liked)
-          } else {
-            setLiked(false)
-          }
-          
-        } catch (err) {
-          console.log(err);
-        }
+              const res = await getDoc(doc(db, `liked/${id}`))
+              const resUser = res.data()[userId]
+              console.log(resUser);
+              if (resUser.exists()){
+                setLiked(resUser.like)
+              } else {
+                setLiked(false)
+              }
+              
+            } catch (err) {
+              console.log(err);
+            }
         }
        
       }
@@ -266,33 +267,48 @@ const PhotoGallery = () => {
     }
      // Like or Unlike Picture & set Date when Liked//
      const likeHandler = async () => {
+      const userId = user.uid
       const authorId = photoData.user
       const cdate = new Date()
       const formatDate = cdate.getMonth() + "-" + cdate.getFullYear()
       // Increment Total Likes //
       try {
-        await updateDoc(doc(db,"totalLikes", authorId),{
-          likes: increment(1),
-          date: formatDate})
+        const qData = await getDoc(doc(db,"totalLikes", authorId))
+        if (qData){
+          await updateDoc(doc(db,"totalLikes", authorId),{
+                    likes: increment(1),
+                    date: formatDate})
+        }else{
+          await setDoc(doc(db, "totalLikes", authorId),{
+            likes: 1,
+            date: formatDate})
+        }
+       
       } catch (err) {
         console.log(err);
       }
       //Increment Likes on Specific picture //
+      const likeTrue = {[userId]:{
+        like: true,
+        date: formatDate,
+        author: authorId
+      }}
+      const likeFalse = {[userId]:{
+        like: false,
+        date: formatDate,
+        author: authorId
+      }}
       try {
-        await updateDoc(doc(db, "liked", photoId),{
-          likes: increment(1),
-          date: formatDate,
-          author: authorId
-        })
+          if (liked === true) {
+            await setDoc(doc(db, "liked", photoId), likeFalse)
+          } else {
+            await setDoc(doc(db, "liked", photoId), likeTrue)
+          }
       } catch (err) {
         console.log(err);
       }
       // Change Whether Currently Liked //
-      if (liked){
-        setLiked(false)
-      } else {
-        setLiked(true)
-      }
+      setLiked(!liked)
     }
     // Save or UnSave Picture & set Date when Saved//
     const saveHandler = async () => {
@@ -308,10 +324,17 @@ const PhotoGallery = () => {
       const savedFalse = {[userId]:{
         saved: false
       }}
+
       // Increment Total Saves //
       try {
-        await updateDoc(doc(db,"totalSaved", user.uid),{
+        const qData = await getDoc(doc(db,"totalSaved", authorId))
+        if (qData){
+           await updateDoc(doc(db,"totalSaved", authorId),{
           saves: increment(1)})
+        } else {
+          await setDoc(doc(db, "totalSaved", authorId), {saves:1})
+        }
+       
       } catch (err) {
         console.log(err);
       }
