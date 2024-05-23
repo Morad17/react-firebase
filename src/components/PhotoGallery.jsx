@@ -328,7 +328,7 @@ const PhotoGallery = () => {
       // Increment Total Saves //
       try {
         const qData = await getDoc(doc(db,"totalSaved", authorId))
-        if (qData){
+        if (qData.exists()){
            await updateDoc(doc(db,"totalSaved", authorId),{
           saves: increment(1)})
         } else {

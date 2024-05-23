@@ -22,7 +22,6 @@ const AdminPage = () => {
 
   const user = JSON.parse(localStorage.getItem("user"))
   const [metrics, setMetrics ] = useState([])
-  const [datas, setData] = useState()
   /// Get Total Views On All User Photos //
   useEffect(()=> {
     const getTotalViews = async() => {
@@ -40,13 +39,10 @@ const AdminPage = () => {
   // / Get Total Photos saved, based on whether currently liked ///
   useEffect(()=> {
     const getTotalPhotosSaved = async () => {
-      const list = []
       try {
-        const qData = await getDocs(collection(db, "liked"), where("author", "==",user.uid))
-        qData.forEach((doc)=> {
-          list.push(doc.data())
-        })
-        setMetrics(prev => ({...prev,"totalSaved":list.length}))
+        const qData = await getDoc(doc(db, "totalSaved", user.uid))
+        const data = qData.data().saves
+        setMetrics(prev => ({...prev,"totalSaved":data}))
       } catch (err) {
         console.log(err);
       }
@@ -54,6 +50,18 @@ const AdminPage = () => {
     getTotalPhotosSaved()
   },[])
   /// Get Total Likes On Photo//
+  useEffect(()=> {
+    const getTotalLikes = async () => {
+      try {
+        const qData = await getDoc(doc(db, "totalLikes", user.uid))
+        const data = qData.data().likes
+        setMetrics((prev)=> ({...prev, "totalLikes":data}))
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getTotalLikes()
+  },[])
   /// Get Total Followers ///
   useEffect(()=> {
    const getTotalFollows = async () => {
@@ -104,7 +112,6 @@ const AdminPage = () => {
     }
     getTotalDownloads()
   },[])
-
   return (
     <div className="admin-page">
       <AdminSidebar />
@@ -177,10 +184,10 @@ const AdminPage = () => {
           </div>
           <div className="photos-shared-card card-vi">
             <div className="top-line">
-              <h3 className="card-title">Photos Shared</h3>
+              <h3 className="card-title">Total Pictures Collected</h3>
               <img src={shared} alt="" />
             </div>
-            <p className="card-number">100</p>
+            <p className="card-number">{metrics.totalSaved}</p>
             <Link><p className="card-link">All Photos</p></Link>
           </div>
         </section>
