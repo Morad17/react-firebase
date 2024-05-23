@@ -22,7 +22,7 @@ const AdminPage = () => {
 
   const user = JSON.parse(localStorage.getItem("user"))
   const [metrics, setMetrics ] = useState([])
-  const [data, setData] = useState()
+  const [datas, setData] = useState()
   /// Get Total Views On All User Photos //
   useEffect(()=> {
     const getTotalViews = async() => {
@@ -37,41 +37,73 @@ const AdminPage = () => {
     getTotalViews()
   }, [])
 
-  // / Get Total Likes On All User Photos ///
+  // / Get Total Photos saved, based on whether currently liked ///
   useEffect(()=> {
-    const getTotalLikes = async () => {
+    const getTotalPhotosSaved = async () => {
       const list = []
       try {
         const qData = await getDocs(collection(db, "liked"), where("author", "==",user.uid))
         qData.forEach((doc)=> {
           list.push(doc.data())
         })
-        setMetrics(prev => ({...prev,"totalLikes":list.length}))
+        setMetrics(prev => ({...prev,"totalSaved":list.length}))
       } catch (err) {
         console.log(err);
       }
     }
-    getTotalLikes()
+    getTotalPhotosSaved()
   },[])
+  /// Get Total Likes On Photo//
   /// Get Total Followers ///
   useEffect(()=> {
    const getTotalFollows = async () => {
     const list = []
     try {
-      const qData = await getDocs(collection(db, "followers"))
-      qData.forEach((doc)=> {
-        const data = doc.data()
-        list.push(data[0].following)
+      const qData = await getDoc(doc(db, "followers", user.uid))
+      const data = Object.values(qData.data())
+        data.forEach((doc)=> {
+        if (doc.following === true) {
+          list.push(doc)
+        }
       })
-      setData(list)
-      console.log(list[0]); 
+      setMetrics((prev) => ({...prev, "totalFollows":list.length}))
     } catch (err) {
       console.log(err);
     }
    }
    getTotalFollows()
   },[])
-
+  ///Get Total Uploads ///
+  useEffect(()=> {
+    const getTotalUploads = async() => {
+      const list = []
+      try {
+        const qData = await getDocs(collection(db, "photo"))
+        qData.forEach((doc)=> {
+          if (doc.data().user === user.uid){
+            list.push(doc.data())
+          }
+        })
+        setMetrics((prev)=> ({...prev, "totalUploads":list.length}))
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getTotalUploads()
+  },[])
+  /// Get Total Downloads ///
+  useEffect(()=> {
+    const getTotalDownloads = async () => {
+      try {
+        const qData = await getDoc(doc(db, "totalDownloads", user.uid))
+        const data = qData.data().downloads
+        setMetrics((prev)=> ({...prev, "totalDownloads":data}))
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getTotalDownloads()
+  },[])
 
   return (
     <div className="admin-page">
@@ -104,7 +136,7 @@ const AdminPage = () => {
             <img src={subs} alt="" />
             </div>
             
-            <p className="card-number">{}</p>
+            <p className="card-number">{metrics.totalFollows }</p>
             <Link><p className="card-link">All Photos</p></Link>
           </div>
         </section>
@@ -129,18 +161,18 @@ const AdminPage = () => {
         <section className="user-metrics">
           <div className="photos-uploaded-card card-vi">
             <div className="top-line">
-              <h3 className="card-title">Photos Uploaded</h3>
+              <h3 className="card-title">My Uploads</h3>
               <img src={uploaded} alt="" />
             </div>
-            <p className="card-number">100</p>
+            <p className="card-number">{metrics.totalUploads}</p>
             <Link><p className="card-link">All Photos</p></Link>
             </div>
           <div className="photos-downloaded-card card-vi">
             <div className="top-line">
-              <h3 className="card-title">Photos Downloaded</h3>
+              <h3 className="card-title">Total Downloads</h3>
               <img src={downloaded} alt="" />
             </div>
-            <p className="card-number">100</p>
+            <p className="card-number">{metrics.totalDownloads}</p>
             <Link><p className="card-link">All Photos</p></Link>
           </div>
           <div className="photos-shared-card card-vi">

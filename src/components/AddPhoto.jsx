@@ -68,14 +68,13 @@ const AddPhoto = () => {
     const handlePicture = e => {
         setPictureFile(e.target.files[0])
     }
-
+    ///Uploads Photo and Info ///
     const handleSubmit = async (e) =>  {
         e.preventDefault()
         try{
-            const res = await addDoc(collection(db, "photo"), {
+            await addDoc(collection(db, "photo"), {
                         ...pictureData
                     });
-            console.log(res);
             successModal()
             //Resetting Inputs after Succes Submit //
             setPictureData({

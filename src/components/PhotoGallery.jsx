@@ -15,6 +15,7 @@ const PhotoGallery = () => {
     const [authorData, setAuthorData] = useState([])
     const [following, setFollowing] = useState()
     const [liked, setLiked ] = useState()
+    const [saved, setSaved] = useState()
     const [dloadWarning, setDloadWarning] = useState(false)
 
     const user = JSON.parse(localStorage.getItem("user"))
@@ -210,7 +211,6 @@ const PhotoGallery = () => {
           const liked = res.data()[userId].liked
           if (res.exists()){
             setLiked(liked)
-            console.log(liked);
           } else {
             setLiked(false)
           }
@@ -266,29 +266,69 @@ const PhotoGallery = () => {
     }
      // Like or Unlike Picture & set Date when Liked//
      const likeHandler = async () => {
+      const authorId = photoData.user
+      const cdate = new Date()
+      const formatDate = cdate.getMonth() + "-" + cdate.getFullYear()
+      // Increment Total Likes //
+      try {
+        await updateDoc(doc(db,"totalLikes", authorId),{
+          likes: increment(1),
+          date: formatDate})
+      } catch (err) {
+        console.log(err);
+      }
+      //Increment Likes on Specific picture //
+      try {
+        await updateDoc(doc(db, "liked", photoId),{
+          likes: increment(1),
+          date: formatDate,
+          author: authorId
+        })
+      } catch (err) {
+        console.log(err);
+      }
+      // Change Whether Currently Liked //
+      if (liked){
+        setLiked(false)
+      } else {
+        setLiked(true)
+      }
+    }
+    // Save or UnSave Picture & set Date when Saved//
+    const saveHandler = async () => {
       const userId = user.uid
       const authorId = photoData.user
       const date = new Date()
       const formatDate = date.getMonth() + "-" + date.getFullYear()
-      const likedTrue = {[userId]:{
-        liked: true,
+      const savedTrue = {[userId]:{
+        saved: true,
         date: formatDate,
         author: authorId
       }}
-      const likedFalse = {[userId]:{
-        liked: false
+      const savedFalse = {[userId]:{
+        saved: false
       }}
-      if (liked){
+      // Increment Total Saves //
+      try {
+        await updateDoc(doc(db,"totalSaved", user.uid),{
+          saves: increment(1)})
+      } catch (err) {
+        console.log(err);
+      }
+
+
+      // Change Whether Currently Saved //
+      if (saved){
         try{
-          await setDoc(doc(db, `liked`,photoId), likedFalse)
-          setLiked(false)
+          await setDoc(doc(db, `saved`,photoId), savedFalse)
+          setSaved(false)
         } catch(err){
           console.log(err);
         }
       } else {
         try{
-          await setDoc(doc(db, `liked`,photoId), likedTrue)
-          setLiked(true)
+          await setDoc(doc(db, `saved`,photoId), savedTrue)
+          setSaved(true)
         } catch(err){
           console.log(err);
         }
@@ -349,6 +389,11 @@ const PhotoGallery = () => {
                 liked ? 
                 <button className="like-button"onClick={() => likeHandler()}>Liked</button>
                 : <button onClick={() => likeHandler()}>Like</button>
+              }
+              {
+                saved ? 
+                <button className="save-button"onClick={() => saveHandler()}>Saved</button>
+                : <button onClick={() => saveHandler()}>Save</button>
               }
               {
                 following ? 
